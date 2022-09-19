@@ -79,15 +79,16 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
+" Adiciona comentarios
 noremap <Leader>cc
 
-noremap <Tab> :tabnext<CR>
-noremap <S-Tab> :tabprevious<CR>
-nnoremap <C-t> :tabnew <bar> :NERDTree<CR>
-noremap <C-e> :tabclose<CR>
-
+" Alternar as tabs do buffer
 nmap <Tab> :bn<CR>
 nmap <S-Tab> :bp<CR>
+nmap <C-w> :bd<CR>
+
+" Ctrl C copia para o windows
+vmap <C-C> "+y
 
 "NAO-FUNCIONA / Autocomplete no ctrl espaço
 "inoremap <silent><expr> <C-Space> compe#complete()
