@@ -39,10 +39,10 @@ if (has("nvim"))
     Plug 'nvim-telescope/telescope.nvim'
 
     " Treesitter
-	Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
     " LSP
-    Plug 'neovim/nvim-lspconfig'
+    "Plug 'neovim/nvim-lspconfig'
 endif
 call plug#end()
 
