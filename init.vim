@@ -39,12 +39,10 @@ if (has("nvim"))
     Plug 'nvim-telescope/telescope.nvim'
 
     " Treesitter
- 	" Plug 'nvim-treesitter/nvim-treesitter'
 	Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-	
 
     " LSP
-"	Plug 'neovim/nvim-lspconfig'
+    Plug 'neovim/nvim-lspconfig'
 endif
 call plug#end()
 
@@ -87,6 +85,17 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
+nnoremap <M-j> :resize -2 <CR>
+nnoremap <M-k> :resize +2 <CR>
+nnoremap <M-h> :vertical resize -2 <CR>
+nnoremap <M-l> :vertical resize +2 <CR>
+
+
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
 " Adiciona comentarios
 noremap <Leader>cc
 
@@ -97,6 +106,16 @@ nmap <C-w> :bd<CR>
 
 " Ctrl C copia para o windows
 vmap <C-C> "+y
+
+
+" Changes all ocourrences for the text that you have typed
+nnoremap <Leader>r :%s///g<Left><Left>
+nnoremap <Leader>rc :%s///gc<Left><Left><Left>
+
+xnoremap <Leader>r :s///g<Left><Left>
+xnoremap <Leader>rc :s///gc<Left><Left><Left>
+
+vnoremap * y/\V<C-R>=escape(@",'/\')<CR><CR>
 
 "NAO-FUNCIONA / Autocomplete no ctrl espaço
 "inoremap <silent><expr> <C-Space> compe#complete()
