@@ -69,6 +69,14 @@ set cursorline
 set mouse=a
 " set nolazyredraw
 
+if !has("gui_running")
+    "set term=xterm
+    "set t_Co=256
+    let &t_AB="\e[48;5;%dm"
+    let &t_AF="\e[38;5;%dm"
+    "colorscheme zenburn
+endif
+
 " Themes """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "source $HOME/AppData/Local/nvim/themes/onedark.vim
 source $HOME/AppData/Local/nvim/themes/sonokai.vim
@@ -124,8 +132,7 @@ let g:airline_powerline_fonts = 1
 
 
 " NerdTree """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nmap <C-e> :NERDTreeToggle<CR>
-
+source $HOME/AppData/Local/nvim/nerdtree/nerdtreee.vim
 
 
 " ALE """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
