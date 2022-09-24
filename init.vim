@@ -17,6 +17,7 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 "Git plugin
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 Plug 'junegunn/gv.vim'
@@ -139,6 +140,8 @@ imap <C-Q> <Plug>BujoCheckinsert
 let g:bujo#window_width = 80
 
 " autocmd """"""""""
+"
+" Evidencia a palavra que esta selecionada
 function! HighlightWordUnderCursor()
     if getline(".")[col(".")-1] !~# '[[:punct:][:blank:]]'
         exec 'match' 'Search' '/\V\<'.expand('<cword>').'\>/'
@@ -158,3 +161,4 @@ source $HOME/AppData/Local/nvim/plugins/nerdtree/nerdtreee.vim
 source $HOME/AppData/Local/nvim/plugins/ale/ale.vim
 source $HOME/AppData/Local/nvim/plugins/treesitter/treesitter.lua
 source $HOME/AppData/Local/nvim/plugins/vimspector/vimspector.vim
+source $HOME/AppData/Local/nvim/plugins/signify/signify.vim
