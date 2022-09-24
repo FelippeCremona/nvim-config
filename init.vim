@@ -21,10 +21,10 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 Plug 'junegunn/gv.vim'
 
-" Plug 'dense-analysis/ale'
 "
-" COC
+" COC - só funcionou bem junto com o plugin do ALE
 Plug 'neoclide/coc.nvim' , { 'branch' : 'release' }
+Plug 'dense-analysis/ale' " Funciona junto com o plugin do COC
 
 " SNIPPETS
 Plug 'honza/vim-snippets'
@@ -32,6 +32,12 @@ Plug 'jiangmiao/auto-pairs'
 
 " Comment
 Plug 'preservim/nerdcommenter'
+
+" Todo List
+Plug 'vuciv/vim-bujo'
+
+" Debug
+Plug 'puremourning/vimspector'
 
 if (has("nvim"))
     " Telescope
@@ -55,7 +61,7 @@ set incsearch ignorecase smartcase hlsearch
 set wildmode=longest,list,full wildmenu
 set ruler laststatus=2 showcmd showmode
 set list listchars=trail:»,tab:»-
-set fillchars+=vert:\ 
+set fillchars+=vert:\
 " set wrap breakindent linebreak
 set nowrap
 set encoding=utf-8
@@ -65,6 +71,8 @@ set number relativenumber
 " set title
 set cursorline
 set mouse=a
+set t_Co=256                            " Support 256 colors
+set background=dark                     " tell vim what the background color looks like
 " set nolazyredraw
 
 if !has("gui_running")
@@ -80,21 +88,24 @@ endif
 source $HOME/AppData/Local/nvim/themes/sonokai.vim
 
 " Remaps """"""""""
-map <C-h> <C-w>h
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-l> <C-w>l
+" Alterna a tecla <Leader> para ,
+let mapleader = "," " map leader to comma
 
+" Alterna a tecla Esc para ,,
+inoremap ,, <Esc>
+
+" Altera entre os splits
+nmap <silent> <A-Up> :wincmd k<CR>
+nmap <silent> <A-Down> :wincmd j<CR>
+nmap <silent> <A-Left> :wincmd h<CR>
+nmap <silent> <A-Right> :wincmd l<CR>
+
+
+" Resize das telas
 nnoremap <M-j> :resize -2 <CR>
 nnoremap <M-k> :resize +2 <CR>
 nnoremap <M-h> :vertical resize -2 <CR>
 nnoremap <M-l> :vertical resize +2 <CR>
-
-
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
 
 " Adiciona comentarios
 noremap <Leader>cc
@@ -107,7 +118,6 @@ nmap <C-w> :bd<CR>
 " Ctrl C copia para o windows
 vmap <C-C> "+y
 
-
 " Changes all ocourrences for the text that you have typed
 nnoremap <Leader>r :%s///g<Left><Left>
 nnoremap <Leader>rc :%s///gc<Left><Left><Left>
@@ -117,12 +127,16 @@ xnoremap <Leader>rc :s///gc<Left><Left><Left>
 
 vnoremap * y/\V<C-R>=escape(@",'/\')<CR><CR>
 
-"NAO-FUNCIONA / Autocomplete no ctrl espaço
-"inoremap <silent><expr> <C-Space> compe#complete()
-"inoremap <silent><expr> <C-e>     compe#close('<C-e>')
-" remaps aqui
+" Todo list
+nmap <Leader>td :Todo g<CR>
+nmap <Leader>tl :Todo<CR>
 
+nmap <C-P> <Plug>BujoAddnormal
+imap <C-P> <Plug>BujoAddinsert
 
+nmap <C-Q> <Plug>BujoChecknormal
+imap <C-Q> <Plug>BujoCheckinsert
+let g:bujo#window_width = 80
 
 " autocmd """"""""""
 function! HighlightWordUnderCursor()
@@ -136,32 +150,11 @@ endfunction
 autocmd! CursorHold,CursorHoldI * call HighlightWordUnderCursor()
 " autocmds aqui
 
-
-" COC """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-source $HOME/AppData/Local/nvim/coc/coc.vim
-
-
-" TELESCOPE """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-source $HOME/AppData/Local/nvim/telescope/telescope.vim
-
-
-" AirLine """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
-
-
-" NerdTree """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-source $HOME/AppData/Local/nvim/nerdtree/nerdtreee.vim
-
-
-" ALE """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" let g:ale_fixers = {
-" \   '*': ['trim_whitespace'],
-" \}
-
-" let g:ale_fix_on_save = 1
-
-
-source $HOME/AppData/Local/nvim/lua/treesitter.lua
-
-
+" Configurações dos Plugins
+source $HOME/AppData/Local/nvim/plugins/coc/coc.vim
+source $HOME/AppData/Local/nvim/plugins/telescope/telescope.vim
+source $HOME/AppData/Local/nvim/plugins/airline/airline.vim
+source $HOME/AppData/Local/nvim/plugins/nerdtree/nerdtreee.vim
+source $HOME/AppData/Local/nvim/plugins/ale/ale.vim
+source $HOME/AppData/Local/nvim/plugins/treesitter/treesitter.lua
+source $HOME/AppData/Local/nvim/plugins/vimspector/vimspector.vim

@@ -1,12 +1,27 @@
 {
-  "languageserver": {
-    "go": {
-      "command": "gopls",
-      "rootPatterns": ["go.mod"],
-      "trace.server": "verbose",
-      "filetypes": ["go"]
-    }
-  },
-  "java.home": "C:\\Trabalho\\Programas\\Java\\jdk-11.0.2",
-  "java.jdt.ls.vmargs": "-javaagent:C:\\Users\\cremo\\.m2\\repository\\org\\projectlombok\\lombok\\1.18.22\\lombok-1.18.22.jar"
+    "languageserver": {
+        "go": {
+            "command": "gopls",
+            "rootPatterns": ["go.mod"],
+            "trace.server": "verbose",
+            "filetypes": ["go"]
+        }
+    },
+    "codeLens.enable": false,
+    "java.referencesCodeLens.enable": false,
+    "java.completion.enabled": true,
+
+    "coc.preferences.hoverTarget": "float",
+    "java.home": "C:\\Trabalho\\Programas\\Java\\jdk-11.0.2",
+    "java.jdt.ls.vmargs": "-javaagent:C:\\Users\\cremo\\.m2\\repository\\org\\projectlombok\\lombok\\1.18.22\\lombok-1.18.22.jar",
+
+    "java.import.maven.enabled": true,
+    "java.completion.overwrite": false,
+    "java.format.onType.enabled": true,
+    "java.completion.guessMethodArguments": true,
+    "java.codeGeneration.useBlocks": true,
+    "java.errors.incompleteClasspath.severity": "ignore",
+    "java.signatureHelp.enabled": true,
+    "java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
+    "java.maven.downloadSources": true
 }
