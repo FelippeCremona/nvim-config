@@ -1,15 +1,18 @@
 {
-    "languageserver": {
-        "go": {
-            "command": "gopls",
-            "rootPatterns": ["go.mod"],
-            "trace.server": "verbose",
-            "filetypes": ["go"]
-        }
-    },
+    "languageserver": {},
     "codeLens.enable": false,
-    "java.referencesCodeLens.enable": false,
+    "java.referencesCodeLens.enable": true,
+    "java.implementationsCodeLens.enabled": true,
     "java.completion.enabled": true,
+
+    "javascript.referencesCodeLens.enable": false,
+    "javascript.implementationsCodeLens.enabled": false,
+
+    "pullDiagnostic.onChange": true,
+    "pullDiagnostic.onSave": false,
+    "pullDiagnostic.workspace": false,
+    "tslint.enable": true,
+    "tslint.autoFixOnSave": true,
 
     "coc.preferences.hoverTarget": "float",
     "java.home": "C:\\Trabalho\\Programas\\Java\\jdk-11.0.2",
@@ -23,5 +26,15 @@
     "java.errors.incompleteClasspath.severity": "ignore",
     "java.signatureHelp.enabled": true,
     "java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
-    "java.maven.downloadSources": true
+    "java.maven.downloadSources": true,
+
+
+
+    "explorer.width": 30,
+    "explorer.icon.enableNerdfont": true,
+    "explorer.previewAction.onHover": false,
+    "explorer.keyMappings.global": {
+        "<cr>": ["expandable?", "expand", "open"],
+        "v": "open:vsplit"
+  }
 }
