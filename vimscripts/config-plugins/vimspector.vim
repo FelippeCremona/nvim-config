@@ -1,16 +1,16 @@
 "compiler java
 let g:vimspector_enable_mappings = 'HUMAN'
 "nmap <leader>dd :call vimspector#Launch()<CR>
-nmap <leader><Esc> :VimspectorReset<CR>
-nmap <leader>eval :VimspectorEval 
+nmap ,, :VimspectorReset<CR>
+nmap ,eval :VimspectorEval 
 nmap <leader>dw :VimspectorWatch
 nmap <leader>do :VimspectorShowOutput
-nmap <leader>bp <Plug>VimspectorToggleBreakpoint
+nmap ,bp <Plug>VimspectorToggleBreakpoint
 nmap <C-n> <Plug>VimspectorStepOver
 nmap <C-l> <Plug>VimspectorRunToCursor
 nmap <C-m> <Plug>VimspectorContinue
 "nmap <C-p> <Plug>VimspectorStop
-autocmd FileType java nmap <leader>dd :CocCommand java.debug.vimspector.start<CR>
+autocmd FileType java nmap ,dd :CocCommand java.debug.vimspector.start<CR>
 
 
 let g:vimspector_sidebar_width = 30

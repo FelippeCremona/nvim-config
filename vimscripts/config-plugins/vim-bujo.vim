@@ -9,3 +9,4 @@ imap <C-P> <Plug>BujoAddinsert
 
 nmap <C-Q> <Plug>BujoChecknormal
 imap <C-Q> <Plug>BujoCheckinsert
+
