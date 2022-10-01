@@ -58,19 +58,11 @@ return packer.startup(function(use)
   -- Colorschemes
   use {'dracula/vim'}
   use {'folke/tokyonight.nvim'}
-
+  use 'tanvirtin/monokai.nvim'
 
   -- Telescope
   use "nvim-telescope/telescope.nvim"
   use 'nvim-telescope/telescope-media-files.nvim'
-
-  -- cmp plugins
-  use "hrsh7th/nvim-cmp" -- The completion plugin
-  use "hrsh7th/cmp-buffer" -- buffer completions
-  use "hrsh7th/cmp-path" -- path completions
-  use "hrsh7th/cmp-cmdline" -- cmdline completions
-  use "saadparwaiz1/cmp_luasnip" -- snippet completions
-  use "hrsh7th/cmp-nvim-lsp"
 
   -- snippets
   use "L3MON4D3/LuaSnip" --snippet engine
@@ -79,10 +71,7 @@ return packer.startup(function(use)
   -- COC
   use {'neoclide/coc.nvim', branch = 'master'}
 
-  use {
-    'nvim-lualine/lualine.nvim',
-    requires = { 'kyazdani42/nvim-web-devicons', opt = true }
-  }
+  use {'nvim-lualine/lualine.nvim', requires = { 'kyazdani42/nvim-web-devicons', opt = true }}
 
   -- Colorizer
   use 'norcalli/nvim-colorizer.lua'
@@ -103,21 +92,15 @@ return packer.startup(function(use)
 
   -- surround
   use 'tpope/vim-surround'
-  --[[ use({ ]]
-  --[[   "kylechui/nvim-surround", ]]
-  --[[   tag = "*", -- Use for stability; omit to use `main` branch for the latest features ]]
-  --[[   config = function() ]]
-  --[[       require("nvim-surround").setup({ ]]
-  --[[           -- Configuration here, or leave empty to use defaults ]]
-  --[[       }) ]]
-  --[[   end ]]
-  --[[ }) ]]
 
   -- debbug java
   use 'puremourning/vimspector'
 
   -- todo list
   use 'vuciv/vim-bujo'
+
+  -- show marks
+  use 'chentoast/marks.nvim'
 
    -- não consegui fazer funcionar
   --use "neovim/nvim-lspconfig" -- enable LSP
