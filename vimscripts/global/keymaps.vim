@@ -8,5 +8,4 @@ xnoremap <Leader>rc :s///gc<Left><Left><Left>
 vnoremap * y/\V<C-R>=escape(@",'/\')<CR><CR>
 
 " Split
-nnoremap <Leader>vs :vs<CR>
-nnoremap <Leader>hs :sp<CR>
+nnoremap <Leader>vs :sp<CR>

@@ -1,30 +1,40 @@
 {
-    "languageserver": {},
+    "languageserver": {
+      "java": {
+        "command": "javalsp",
+        "filetypes": ["java"],
+        "initializationOptions": {
+          "extendedClientCapabilities": {
+            "classFileContentsSupport": true
+          }
+        },
+        "settings": {
+        }
+      }
+    },
     "codeLens.enable": false,
-    "java.referencesCodeLens.enable": true,
-    "java.implementationsCodeLens.enabled": true,
-    "java.completion.enabled": true,
+    "codeLens.position": "eol",
 
-    "javascript.referencesCodeLens.enable": false,
-    "javascript.implementationsCodeLens.enabled": false,
+    "typescript.referencesCodeLens.enable": false,
+    "typescript.implementationsCodeLens.enable": false,
 
     "pullDiagnostic.onChange": true,
     "pullDiagnostic.onSave": false,
     "pullDiagnostic.workspace": false,
-    "tslint.enable": true,
-    "tslint.autoFixOnSave": true,
-
-    "coc.preferences.hoverTarget": "float",
+    
     "java.home": "C:\\Trabalho\\Programas\\Java\\jdk-11.0.2",
     "java.jdt.ls.vmargs": "-javaagent:C:\\Users\\cremo\\.m2\\repository\\org\\projectlombok\\lombok\\1.18.22\\lombok-1.18.22.jar",
-
-    "java.import.maven.enabled": true,
+    "java.referencesCodeLens.enabled": false,
+    "java.implementationsCodeLens.enabled": false,
+    "java.completion.enabled": true,
+    "java.import.maven.enabled": false,
     "java.completion.overwrite": false,
-    "java.format.onType.enabled": true,
-    "java.completion.guessMethodArguments": true,
-    "java.codeGeneration.useBlocks": true,
+    "java.format.onType.enabled": false,
+    "java.completion.guessMethodArguments": false,
+    "java.codeGeneration.useBlocks": false,
     "java.errors.incompleteClasspath.severity": "ignore",
-    "java.signatureHelp.enabled": true,
+    "java.signatureHelp.enabled": false,
     "java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
     "java.maven.downloadSources": true
+
 }

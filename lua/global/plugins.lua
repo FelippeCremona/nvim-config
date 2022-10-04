@@ -48,7 +48,7 @@ return packer.startup(function(use)
   -- Load on a combination of conditions: specific filetypes or commands
   -- Also run code after load (see the "config" key)
   --use 'w0rp/ale'
-  use 'dense-analysis/ale'
+  --[[ use 'dense-analysis/ale' ]]
   -- Post-install/update hook with neovim command
   use { 'nvim-treesitter/nvim-treesitter'}
 
@@ -101,6 +101,9 @@ return packer.startup(function(use)
 
   -- show marks
   use 'chentoast/marks.nvim'
+
+  -- harpoon
+  use { 'ThePrimeagen/harpoon', requires = "nvim-lua/plenary.nvim" }
 
    -- não consegui fazer funcionar
   --use "neovim/nvim-lspconfig" -- enable LSP

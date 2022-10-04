@@ -18,6 +18,7 @@ require "config-plugins.comment"
 require "config-plugins.nvim-tree"
 require "config-plugins.colorizer"
 require "config-plugins.marks"
+require("config-plugins.harpoon")
 
 -- Globais em Vimscript
 vim.cmd "source $HOME/AppData/Local/nvim/vimscripts/global/keymaps.vim"

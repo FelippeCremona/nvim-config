@@ -84,11 +84,6 @@ _G.packer_plugins = {
     path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\LuaSnip",
     url = "https://github.com/L3MON4D3/LuaSnip"
   },
-  ale = {
-    loaded = true,
-    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\ale",
-    url = "https://github.com/dense-analysis/ale"
-  },
   ["bufferline.nvim"] = {
     loaded = true,
     path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\bufferline.nvim",
@@ -108,6 +103,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\gitsigns.nvim",
     url = "https://github.com/lewis6991/gitsigns.nvim"
+  },
+  harpoon = {
+    loaded = true,
+    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\harpoon",
+    url = "https://github.com/ThePrimeagen/harpoon"
   },
   ["lualine.nvim"] = {
     loaded = true,

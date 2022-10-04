@@ -31,6 +31,20 @@ nvim_tree.setup {
       error = "",
     },
   },
+  renderer = {
+    icons = {
+      glyphs = {
+        git = {
+          unstaged = "",
+          staged = "S",
+          unmerged = "",
+          renamed = "➜",
+          deleted = "",
+          untracked = "U",
+          ignored = "◌",}
+        }
+      }
+    },
   update_focused_file = {
     enable = true,
     update_cwd = true,
