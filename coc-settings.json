@@ -1,17 +1,8 @@
 {
     "languageserver": {
-      "java": {
-        "command": "javalsp",
-        "filetypes": ["java"],
-        "initializationOptions": {
-          "extendedClientCapabilities": {
-            "classFileContentsSupport": true
-          }
-        },
-        "settings": {
-        }
-      }
     },
+    "suggest.triggerCompletionWait": 10,
+    
     "codeLens.enable": false,
     "codeLens.position": "eol",
 
@@ -23,6 +14,7 @@
     "pullDiagnostic.workspace": false,
     
     "java.home": "C:\\Trabalho\\Programas\\Java\\jdk-11.0.2",
+    "java.jdt.ls.home": "C:\\Trabalho\\Programas\\Java\\jdtls",
     "java.jdt.ls.vmargs": "-javaagent:C:\\Users\\cremo\\.m2\\repository\\org\\projectlombok\\lombok\\1.18.22\\lombok-1.18.22.jar",
     "java.referencesCodeLens.enabled": false,
     "java.implementationsCodeLens.enabled": false,
