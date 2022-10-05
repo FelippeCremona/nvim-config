@@ -27,6 +27,6 @@
     "java.errors.incompleteClasspath.severity": "ignore",
     "java.signatureHelp.enabled": false,
     "java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
-    "java.maven.downloadSources": true
-
+    "java.maven.downloadSources": true,
+    "diagnostic.refreshOnInsertMode": false
 }
