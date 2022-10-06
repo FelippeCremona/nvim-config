@@ -1,6 +1,6 @@
 "compiler java
 let g:vimspector_enable_mappings = 'HUMAN'
-"nmap <leader>dd :call vimspector#Launch()<CR>
+nmap <leader>dd :call vimspector#Launch()<CR>
 nmap ,, :VimspectorReset<CR>
 nmap ,eval :VimspectorEval 
 nmap <leader>dw :VimspectorWatch

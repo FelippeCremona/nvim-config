@@ -50,14 +50,16 @@ return packer.startup(function(use)
   --use 'w0rp/ale'
   --[[ use 'dense-analysis/ale' ]]
   -- Post-install/update hook with neovim command
+
+  -- Treesitter
   use { 'nvim-treesitter/nvim-treesitter'}
 
   use 'kyazdani42/nvim-web-devicons'
   use 'kyazdani42/nvim-tree.lua'
 
   -- Colorschemes
-  use {'dracula/vim'}
-  use {'folke/tokyonight.nvim'}
+  --[[ use {'dracula/vim'} ]]
+  --[[ use {'folke/tokyonight.nvim'} ]]
   use 'tanvirtin/monokai.nvim'
 
   -- Telescope
@@ -65,12 +67,13 @@ return packer.startup(function(use)
   use 'nvim-telescope/telescope-media-files.nvim'
 
   -- snippets
-  use "L3MON4D3/LuaSnip" --snippet engine
-  use "rafamadriz/friendly-snippets" -- a bunch of snippets to use
+  --[[ use "L3MON4D3/LuaSnip" --snippet engine ]]
+  --[[ use "rafamadriz/friendly-snippets" -- a bunch of snippets to use ]]
 
   -- COC
-  use {'neoclide/coc.nvim', branch = 'master'}
+  use {'neoclide/coc.nvim', branch = 'release' }
 
+  -- Lualine
   use {'nvim-lualine/lualine.nvim', requires = { 'kyazdani42/nvim-web-devicons', opt = true }}
 
   -- Colorizer
@@ -82,11 +85,12 @@ return packer.startup(function(use)
   -- Git
   use "lewis6991/gitsigns.nvim"
 
+  -- Commentario
   use "numToStr/Comment.nvim" -- Easily comment stuff
   use 'JoosepAlviste/nvim-ts-context-commentstring'
 
   use "windwp/nvim-autopairs" -- Autopairs, integrates with both cmp and treesitter
-  use "folke/which-key.nvim"
+  --[[ use "folke/which-key.nvim" ]]
 
   use {'akinsho/bufferline.nvim', tag = "v2.*", requires = 'kyazdani42/nvim-web-devicons'}
 
@@ -103,7 +107,7 @@ return packer.startup(function(use)
   use 'chentoast/marks.nvim'
 
   -- harpoon
-  use { 'ThePrimeagen/harpoon', requires = "nvim-lua/plenary.nvim" }
+  --[[ use { 'ThePrimeagen/harpoon', requires = "nvim-lua/plenary.nvim" } ]]
 
    -- não consegui fazer funcionar
   --use "neovim/nvim-lspconfig" -- enable LSP

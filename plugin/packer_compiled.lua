@@ -79,11 +79,6 @@ _G.packer_plugins = {
     path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\Comment.nvim",
     url = "https://github.com/numToStr/Comment.nvim"
   },
-  LuaSnip = {
-    loaded = true,
-    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\LuaSnip",
-    url = "https://github.com/L3MON4D3/LuaSnip"
-  },
   ["bufferline.nvim"] = {
     loaded = true,
     path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\bufferline.nvim",
@@ -94,20 +89,10 @@ _G.packer_plugins = {
     path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\coc.nvim",
     url = "https://github.com/neoclide/coc.nvim"
   },
-  ["friendly-snippets"] = {
-    loaded = true,
-    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\friendly-snippets",
-    url = "https://github.com/rafamadriz/friendly-snippets"
-  },
   ["gitsigns.nvim"] = {
     loaded = true,
     path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\gitsigns.nvim",
     url = "https://github.com/lewis6991/gitsigns.nvim"
-  },
-  harpoon = {
-    loaded = true,
-    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\harpoon",
-    url = "https://github.com/ThePrimeagen/harpoon"
   },
   ["lualine.nvim"] = {
     loaded = true,
@@ -184,16 +169,6 @@ _G.packer_plugins = {
     path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\telescope.nvim",
     url = "https://github.com/nvim-telescope/telescope.nvim"
   },
-  ["tokyonight.nvim"] = {
-    loaded = true,
-    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\tokyonight.nvim",
-    url = "https://github.com/folke/tokyonight.nvim"
-  },
-  vim = {
-    loaded = true,
-    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\vim",
-    url = "https://github.com/dracula/vim"
-  },
   ["vim-bujo"] = {
     loaded = true,
     path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\vim-bujo",
@@ -208,11 +183,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\vimspector",
     url = "https://github.com/puremourning/vimspector"
-  },
-  ["which-key.nvim"] = {
-    loaded = true,
-    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\which-key.nvim",
-    url = "https://github.com/folke/which-key.nvim"
   }
 }
 
