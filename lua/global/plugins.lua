@@ -45,15 +45,18 @@ return packer.startup(function(use)
   use "nvim-lua/popup.nvim" -- An implementation of the Popup API from vim in Neovim
   use "nvim-lua/plenary.nvim" -- Useful lua functions used ny lots of plugins
 
+  use "antoinemadec/FixCursorHold.nvim" -- This is needed to fix lsp doc highlight
+
   -- Load on a combination of conditions: specific filetypes or commands
   -- Also run code after load (see the "config" key)
-  --use 'w0rp/ale'
+  --[[ use 'w0rp/ale' ]]
   --[[ use 'dense-analysis/ale' ]]
   -- Post-install/update hook with neovim command
 
   -- Treesitter
-  use { 'nvim-treesitter/nvim-treesitter'}
+  use {"nvim-treesitter/nvim-treesitter", run = ":TSUpdate", }
 
+  -- nvim-tree
   use 'kyazdani42/nvim-web-devicons'
   use 'kyazdani42/nvim-tree.lua'
 
@@ -67,11 +70,11 @@ return packer.startup(function(use)
   use 'nvim-telescope/telescope-media-files.nvim'
 
   -- snippets
-  --[[ use "L3MON4D3/LuaSnip" --snippet engine ]]
-  --[[ use "rafamadriz/friendly-snippets" -- a bunch of snippets to use ]]
+  use "L3MON4D3/LuaSnip" --snippet engine
+  use "rafamadriz/friendly-snippets" -- a bunch of snippets to use
 
   -- COC
-  use {'neoclide/coc.nvim', branch = 'release' }
+  --[[ use {'neoclide/coc.nvim', branch = 'release' } ]]
 
   -- Lualine
   use {'nvim-lualine/lualine.nvim', requires = { 'kyazdani42/nvim-web-devicons', opt = true }}
@@ -98,7 +101,7 @@ return packer.startup(function(use)
   use 'tpope/vim-surround'
 
   -- debbug java
-  use 'puremourning/vimspector'
+  --[[ use 'puremourning/vimspector' ]]
 
   -- todo list
   use 'vuciv/vim-bujo'
@@ -109,12 +112,22 @@ return packer.startup(function(use)
   -- harpoon
   --[[ use { 'ThePrimeagen/harpoon', requires = "nvim-lua/plenary.nvim" } ]]
 
-   -- não consegui fazer funcionar
-  --use "neovim/nvim-lspconfig" -- enable LSP
-  --use "williamboman/nvim-lsp-installer" -- simple to use language server installer
+   -- cmp plugins
+  use "hrsh7th/nvim-cmp" -- The completion plugin
+  use "hrsh7th/cmp-buffer" -- buffer completions
+  use "hrsh7th/cmp-path" -- path completions
+  use "hrsh7th/cmp-cmdline" -- cmdline completions
+  use "hrsh7th/cmp-nvim-lsp"
+  use "saadparwaiz1/cmp_luasnip" -- snippet completions
 
-  -- jdtls (java) não consegui fazer funcionar
-  --use 'mfussenegger/nvim-jdtls'
+  -- LSP
+  use "neovim/nvim-lspconfig" -- enable LSP
+  use "hrsh7th/nvim-compe"
+  use "williamboman/nvim-lsp-installer" -- simple to use language server installer
+  use 'arkav/lualine-lsp-progress'
+
+  -- jdtls (java)
+  use 'mfussenegger/nvim-jdtls'
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins

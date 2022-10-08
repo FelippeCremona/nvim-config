@@ -71,3 +71,5 @@ keymap("n", ",g", "<cmd>Telescope live_grep<cr>", opts)
 
 -- Nvimtree
 keymap("n", "<space>e", ":NvimTreeToggle<cr>", opts)
+
+keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)

@@ -79,20 +79,60 @@ _G.packer_plugins = {
     path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\Comment.nvim",
     url = "https://github.com/numToStr/Comment.nvim"
   },
+  ["FixCursorHold.nvim"] = {
+    loaded = true,
+    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\FixCursorHold.nvim",
+    url = "https://github.com/antoinemadec/FixCursorHold.nvim"
+  },
+  LuaSnip = {
+    loaded = true,
+    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\LuaSnip",
+    url = "https://github.com/L3MON4D3/LuaSnip"
+  },
   ["bufferline.nvim"] = {
     loaded = true,
     path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\bufferline.nvim",
     url = "https://github.com/akinsho/bufferline.nvim"
   },
-  ["coc.nvim"] = {
+  ["cmp-buffer"] = {
     loaded = true,
-    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\coc.nvim",
-    url = "https://github.com/neoclide/coc.nvim"
+    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\cmp-buffer",
+    url = "https://github.com/hrsh7th/cmp-buffer"
+  },
+  ["cmp-cmdline"] = {
+    loaded = true,
+    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\cmp-cmdline",
+    url = "https://github.com/hrsh7th/cmp-cmdline"
+  },
+  ["cmp-nvim-lsp"] = {
+    loaded = true,
+    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\cmp-nvim-lsp",
+    url = "https://github.com/hrsh7th/cmp-nvim-lsp"
+  },
+  ["cmp-path"] = {
+    loaded = true,
+    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\cmp-path",
+    url = "https://github.com/hrsh7th/cmp-path"
+  },
+  cmp_luasnip = {
+    loaded = true,
+    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\cmp_luasnip",
+    url = "https://github.com/saadparwaiz1/cmp_luasnip"
+  },
+  ["friendly-snippets"] = {
+    loaded = true,
+    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\friendly-snippets",
+    url = "https://github.com/rafamadriz/friendly-snippets"
   },
   ["gitsigns.nvim"] = {
     loaded = true,
     path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\gitsigns.nvim",
     url = "https://github.com/lewis6991/gitsigns.nvim"
+  },
+  ["lualine-lsp-progress"] = {
+    loaded = true,
+    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\lualine-lsp-progress",
+    url = "https://github.com/arkav/lualine-lsp-progress"
   },
   ["lualine.nvim"] = {
     loaded = true,
@@ -114,10 +154,35 @@ _G.packer_plugins = {
     path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\nvim-autopairs",
     url = "https://github.com/windwp/nvim-autopairs"
   },
+  ["nvim-cmp"] = {
+    loaded = true,
+    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\nvim-cmp",
+    url = "https://github.com/hrsh7th/nvim-cmp"
+  },
   ["nvim-colorizer.lua"] = {
     loaded = true,
     path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\nvim-colorizer.lua",
     url = "https://github.com/norcalli/nvim-colorizer.lua"
+  },
+  ["nvim-compe"] = {
+    loaded = true,
+    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\nvim-compe",
+    url = "https://github.com/hrsh7th/nvim-compe"
+  },
+  ["nvim-jdtls"] = {
+    loaded = true,
+    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\nvim-jdtls",
+    url = "https://github.com/mfussenegger/nvim-jdtls"
+  },
+  ["nvim-lsp-installer"] = {
+    loaded = true,
+    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\nvim-lsp-installer",
+    url = "https://github.com/williamboman/nvim-lsp-installer"
+  },
+  ["nvim-lspconfig"] = {
+    loaded = true,
+    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\nvim-lspconfig",
+    url = "https://github.com/neovim/nvim-lspconfig"
   },
   ["nvim-notify"] = {
     loaded = true,
@@ -178,11 +243,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\vim-surround",
     url = "https://github.com/tpope/vim-surround"
-  },
-  vimspector = {
-    loaded = true,
-    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\vimspector",
-    url = "https://github.com/puremourning/vimspector"
   }
 }
 

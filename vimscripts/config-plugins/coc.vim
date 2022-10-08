@@ -1,4 +1,4 @@
-let g:coc_global_extensions = [ "coc-snippets", "coc-html", "coc-java", "coc-java-debug", "coc-tsserver", "coc-css", "coc-lua", "coc-json" ]
+let g:coc_global_extensions = [ "coc-snippets", "coc-html", "coc-tsserver", "coc-css", "coc-lua", "coc-json" ]
 
 " Some servers have issues with backup files, see #649.
 set nobackup
