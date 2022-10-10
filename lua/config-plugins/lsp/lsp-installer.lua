@@ -7,12 +7,13 @@ end
 -- Alternatively, you may also register handlers on specific server instances instead (see example below).
 lsp_installer.on_server_ready(function(server)
 	local opts = {
-		on_attach = require("config-plugins.lsp.handlers").on_attach,
-		capabilities = require("config-plugins.lsp.handlers").capabilities,
+		--[[ on_attach = require("config-plugins.lsp.handlers").on_attach, ]]
+		--[[ capabilities = require("config-plugins.lsp.handlers").capabilities, ]]
 	}
 
   if server.name == "jdt.ls" then
-    print "cremona"
+    local jdtls_opts = require("config-plugins.lsp.settings.jdtls")
+    opts = vim.tbl_deep_extend("force", jdtls_opts, opts)
   end
 
   if server.name == "jsonls" then

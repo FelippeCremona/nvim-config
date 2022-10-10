@@ -37,7 +37,7 @@ local options = {
 }
 
 vim.opt.shortmess:append "c"
-
+vim.o.completeopt = "menuone,noselect"
 vim.o.t_Co="256"
 vim.cmd "set whichwrap+=<,>,[,],h,l"
 vim.cmd [[set iskeyword+=-]]

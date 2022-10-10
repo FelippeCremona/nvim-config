@@ -8,3 +8,9 @@ function! HighlightWordUnderCursor()
 endfunction
 
 autocmd! CursorHold,CursorHoldI * call HighlightWordUnderCursor()
+
+
+" augroup lsp
+"   au!
+"   au FileType java lua require'config-plugin.lsp.lsp-handlers'.setup()
+" augroup end
