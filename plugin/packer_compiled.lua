@@ -79,11 +79,6 @@ _G.packer_plugins = {
     path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\Comment.nvim",
     url = "https://github.com/numToStr/Comment.nvim"
   },
-  ["FixCursorHold.nvim"] = {
-    loaded = true,
-    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\FixCursorHold.nvim",
-    url = "https://github.com/antoinemadec/FixCursorHold.nvim"
-  },
   LuaSnip = {
     loaded = true,
     path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\LuaSnip",
@@ -93,6 +88,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\bufferline.nvim",
     url = "https://github.com/akinsho/bufferline.nvim"
+  },
+  ["coc.nvim"] = {
+    loaded = true,
+    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\coc.nvim",
+    url = "https://github.com/neoclide/coc.nvim"
   },
   ["friendly-snippets"] = {
     loaded = true,
