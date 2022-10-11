@@ -1,3 +1,4 @@
+
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
 local workspace_dir = 'C:/Trabalho/workspace-jdtls/' .. project_name
 -- See `:help vim.lsp.start_client` for an overview of the supported `config` options.
@@ -70,3 +71,10 @@ local config = {
 -- This starts a new client & server,
 -- or attaches to an existing client & server depending on the `root_dir`.
 require('jdtls').start_or_attach(config)
+
+--[[ local M = { ]]
+--[[   {autostart = false}, ]]
+--[[   {root_dir = require('jdtls.setup').find_root({'.git', 'mvnw', 'gradlew'})}, ]]
+--[[ } ]]
+
+--[[ return M ]]
