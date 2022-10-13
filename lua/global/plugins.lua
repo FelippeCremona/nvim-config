@@ -124,7 +124,7 @@ return packer.startup(function(use)
   use "neovim/nvim-lspconfig" -- enable LSP
   use "hrsh7th/nvim-compe"
   use "williamboman/nvim-lsp-installer" -- simple to use language server installer
-  use 'arkav/lualine-lsp-progress'
+  --[[ use 'arkav/lualine-lsp-progress' ]]
 
   -- jdtls (java)
   use 'mfussenegger/nvim-jdtls'

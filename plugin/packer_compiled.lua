@@ -104,11 +104,6 @@ _G.packer_plugins = {
     path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\gitsigns.nvim",
     url = "https://github.com/lewis6991/gitsigns.nvim"
   },
-  ["lualine-lsp-progress"] = {
-    loaded = true,
-    path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\lualine-lsp-progress",
-    url = "https://github.com/arkav/lualine-lsp-progress"
-  },
   ["lualine.nvim"] = {
     loaded = true,
     path = "C:\\Users\\cremo\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\lualine.nvim",

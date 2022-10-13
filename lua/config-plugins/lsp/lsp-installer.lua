@@ -22,10 +22,15 @@ lsp_installer.on_server_ready(function(server)
     opts = vim.tbl_deep_extend("force", sumneko_opts, opts)
   end
 
-  if server.name == "jdtls" then
-    local jdtls_opts = require("config-plugins.lsp.settings.jdtls")
-    opts = vim.tbl_deep_extend("force", jdtls_opts, opts)
+  if server.name == "tsserver" then
+    local tsserver_opts = require("config-plugins.lsp.settings.tsserver")
+    opts = vim.tbl_deep_extend("force", tsserver_opts, opts)
   end
+
+  --[[ if server.name == "jdtls" then ]]
+  --[[   local jdtls_opts = require("config-plugins.lsp.settings.jdtls") ]]
+  --[[   opts = vim.tbl_deep_extend("force", jdtls_opts, opts) ]]
+  --[[ end ]]
 
 	-- This setup() function is exactly the same as lspconfig's setup function.
 	-- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
