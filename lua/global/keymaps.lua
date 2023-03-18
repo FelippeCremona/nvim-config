@@ -161,4 +161,16 @@ keymap("n", "<C-A-o>", "<Cmd>lua require'jdtls'.organize_imports()<CR>", opts)
 -- keymap("n", "<C-A-n>", "<cmd>lua vim.diagnostic.goto_next({buffer=0})<CR>  <cmd>lua vim.lsp.buf.code_action()<cr> ", opts)
 -- keymap("n", "<leader>wl", "<cmd> print(lua vim.inspect(vim.lsp.buf.list_workspace_folders()))<cr>", opts)
 
+-- Remap for dealing with word wrap
+vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+
+-- Diagnostic keymaps
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
+
+-- The line beneath this is called `modeline`. See `:help modeline`
+-- vim: ts=2 sts=2 sw=2 et
 return M
