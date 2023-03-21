@@ -46,6 +46,7 @@ dap.configurations.java = {
     port = 5005;
   },
 }
+
 -- Main Config
 local config = {
   -- The command that starts the language server
@@ -141,7 +142,7 @@ local config = {
         "org"
       },
     },
-    extendedClientCapabilities = extendedClientCapabilities,
+    -- extendedClientCapabilities = extendedClientCapabilities,
     sources = {
       organizeImports = {
         starThreshold = 9999,
