@@ -39,11 +39,9 @@ keymap("n", "<m-k>", "<C-w>k", opts)
 keymap("n", "<m-l>", "<C-w>l", opts)
 keymap("n", "<m-tab>", "<c-6>", opts)
 
--- Tabs --
--- keymap("n", "\\", ":tabnew %<cr>", opts)
--- keymap("n", "\\", ":tabnew %<cr>", opts)
--- keymap("n", "<s-\\>", ":tabclose<cr>", opts)
--- keymap("n", "<s-\\>", ":tabonly<cr>", opts)
+-- Melhora o Ctrl d e Ctrl u
+keymap("n", "<C-d>", "<C-d>zz", opts)
+keymap("n", "<C-u>", "<C-u>zz", opts)
 
 -- Resize with arrows
 keymap("n", "<C-Up>", ":resize -2<CR>", opts)
@@ -53,22 +51,13 @@ keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 
 -- Visual --
 -- Stay in indent mode
-keymap("v", "<", "<gv", opts)
-keymap("v", ">", ">gv", opts)
+keymap("v", "<Left>", "<gv", opts)
+keymap("v", "<Right>", ">gv", opts)
 
 keymap("v", "p", '"_dP', opts)
--- keymap("v", "P", '"_dP', opts)
 
-keymap("n", "Q", "<cmd>Bdelete!<CR>", opts)
-
-keymap(
-  "n",
-  "<F6>",
-  [[:echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">" . " FG:" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"fg#")<CR>]],
-  opts
-)
 keymap("n", "<F7>", "<cmd>TSHighlightCapturesUnderCursor<cr>", opts)
--- keymap("n", "<C-z>", "<cmd>ZenMode<cr>", opts)
+
 keymap("n", "-", ":lua require'lir.float'.toggle()<cr>", opts)
 keymap("n", "gx", [[:silent execute '!$BROWSER ' . shellescape(expand('<cfile>'), 1)<CR>]], opts)
 keymap("n", "<m-v>", "<cmd>lua require('lsp_lines').toggle()<cr>", opts)
@@ -134,32 +123,45 @@ keymap("n", "<Tab>", ":bnext<CR>", opts)
 keymap("n", "<S-Tab>", ":bprevious<CR>", opts)
 keymap("n", "<C-w>", ":bd<CR>", opts)
 
--- Telescope
+-- Atalho Telescope
 keymap("n", ",f", "<cmd>Telescope find_files<cr>", opts)
 keymap("n", ",g", "<cmd>Telescope live_grep<cr>", opts)
-keymap("n", "gr", "<cmd>lua require('telescope.builtin').lsp_references()<cr>", opts)
+keymap("n", "<C-r>", "<cmd>lua require('telescope.builtin').lsp_references()<cr>", opts)
 keymap("n", ",d", "<cmd>lua require('telescope.builtin').diagnostics()<cr>", opts)
+-- Atalho LSP
+keymap('n','gD','<cmd>lua vim.lsp.buf.declaration()<CR>')
+keymap('n','gd','<cmd>lua vim.lsp.buf.definition()<CR>')
+keymap('n','K','<cmd>lua vim.lsp.buf.hover()<CR>')
+keymap('n','gr','<cmd>lua vim.lsp.buf.references()<CR>')
+keymap('n','gs','<cmd>lua vim.lsp.buf.signature_help()<CR>')
+keymap('n','gi','<cmd>lua vim.lsp.buf.implementation()<CR>')
+keymap('n','gt','<cmd>lua vim.lsp.buf.type_definition()<CR>')
+keymap('n','<leader>gw','<cmd>lua vim.lsp.buf.document_symbol()<CR>')
+keymap('n','<leader>gW','<cmd>lua vim.lsp.buf.workspace_symbol()<CR>')
+keymap('n','<leader>ah','<cmd>lua vim.lsp.buf.hover()<CR>')
+keymap('n','<leader>af','<cmd>lua vim.lsp.buf.code_action()<CR>')
+keymap('n','<leader>ee','<cmd>lua vim.lsp.util.show_line_diagnostics()<CR>')
+keymap('n','<leader>ar','<cmd>lua vim.lsp.buf.rename()<CR>')
+keymap('n','<leader>=', '<cmd>lua vim.lsp.buf.formatting()<CR>')
+keymap('n','<leader>ai','<cmd>lua vim.lsp.buf.incoming_calls()<CR>')
+keymap('n','<leader>ao','<cmd>lua vim.lsp.buf.outgoing_calls()<CR>')
 
--- LSP
-keymap("n", "<C-A-n>", "<cmd>lua vim.diagnostic.goto_next({buffer=0})<CR> <cmd>CodeActionMenu<CR> ", opts)
-keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-keymap("n", "<S-k>", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
--- keymap("n", "td", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
-keymap("n", "<C-A-r>", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
--- keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
--- keymap("n", "gs", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
--- keymap("n", "<C-A-e>", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", opts)
-
--- JDTLS
 keymap("n", "<C-A-o>", "<Cmd>lua require'jdtls'.organize_imports()<CR>", opts)
+keymap("n", "<C-A-n>", "<cmd>lua vim.diagnostic.goto_next({buffer=0})<CR> <cmd>CodeActionMenu<CR> ", opts)
+-- Atalhos JDTLS
+keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
 
-
-
-
--- keymap("n", "<C-A-n>", "<cmd>lua vim.diagnostic.goto_next({buffer=0})<CR>  <cmd>lua vim.lsp.buf.code_action()<cr> ", opts)
--- keymap("n", "<leader>wl", "<cmd> print(lua vim.inspect(vim.lsp.buf.list_workspace_folders()))<cr>", opts)
+-- Atalhos DAP
+keymap('n', '<space>b', ':lua require("dap").toggle_breakpoint()<CR>')
+keymap('n', '<space>B', ':lua require("dap").set_breakpoint()<CR>')
+keymap('n', '<F1>', ':lua require("dap.ui.widgets").centered_float(require("dap.ui.widgets").frames)<CR>')
+keymap('n', '<F2>', ':lua require("dap.ui.widgets").hover()<CR>')
+keymap('n', '<F3>', ':lua require"dap".repl.toggle({height=8})<CR>')
+keymap('n', '<F4>', ':lua require"dap.ui.widgets".centered_float(require"dap.ui.widgets".scopes)<CR>')
+keymap('n', '<F5>', ':lua require"dap".continue()<CR>')
+keymap('n', '<F8>', ':lua require"dap".step_over()<CR>')
+keymap('n', '<F7>', ':lua require"dap".step_into()<CR>')
+keymap('n', '<S-F8>', ':lua require"dap".step_out()<CR>')
 
 -- Remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
@@ -171,6 +173,4 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
 
--- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
 return M

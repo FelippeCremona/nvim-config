@@ -8,6 +8,8 @@ vim.opt.fillchars:append {
   stl = ' ',
 }
 
+vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl='', numhl=''})
+
 vim.opt.shortmess:append "c"
 
 vim.cmd "set whichwrap+=<,>,[,],h,l"
@@ -24,8 +26,8 @@ vim.g.python3_host_prog = '/usr/bin/python3.9'
 
 
 -- disable netrw at the very start of your init.lua (strongly advised)
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_netrw = 0
+vim.g.loaded_netrwPlugin = 0
 
 -- set termguicolors to enable highlight groups
 vim.opt.termguicolors = true
@@ -40,7 +42,8 @@ vim.o.termguicolors = true
 vim.cmd [[colorscheme onedark]]
 
 -- Set completeopt to have a better completion experience
-vim.o.completeopt = 'menuone,noselect'
+-- vim.o.completeopt = 'menuone,noselect'
+vim.opt.completeopt = {'menu', 'menuone', 'noselect'}
 
 local options = {
   backup = false,                           -- creates a backup file

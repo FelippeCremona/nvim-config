@@ -1,21 +1,35 @@
--- nvim-cmp setup
-local cmp = require 'cmp'
-local luasnip = require 'luasnip'
+local luasnip = require'luasnip'
+local cmp = require'cmp'
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 
-cmp.setup {
+require("luasnip.loaders.from_vscode").lazy_load()
+
+-- cmp.event:on(
+--   'confirm_done',
+--   cmp_autopairs.on_confirm_done()
+-- )
+local handlers = require('nvim-autopairs.completion.handlers')
+
+cmp.setup({
   snippet = {
     expand = function(args)
       luasnip.lsp_expand(args.body)
     end,
   },
-  mapping = cmp.mapping.preset.insert {
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+  -- window = {
+  --   completion = cmp.config.window.bordered(),
+  --   documentation = cmp.config.window.bordered(),
+  -- },
+  experimental = {
+    ghost_text = true,
+    native_menu = false,
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
-    ['<CR>'] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
-    },
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
@@ -34,9 +48,73 @@ cmp.setup {
         fallback()
       end
     end, { 'i', 's' }),
+    ['<C-j>'] = function()
+      local active = cmp.get_active_entry()
+      if active then
+        return cmp.close()
+      end
+      local next = '<Cmd>lua require("cmp").select_next_item()<CR>'
+      local prev = '<Cmd>lua require("cmp").select_prev_item()<CR>'
+      local close = '<Cmd>lua require("cmp").close()<CR>'
+      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(next .. prev .. close, true, true, true), 'n', true)
+    end,
+  }),
+  formatting = {
+    fields = { "kind", "abbr", "menu" },
+    format = function(entry, vim_item)
+      -- Kind icons
+      -- vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
+      -- vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind) -- This concatonates the icons with the name of the item kind
+      vim_item.menu = ({
+        nvim_lsp = "[LSP]",
+        luasnip = "[Snippet]",
+        buffer = "[Buffer]",
+        path = "[Path]",
+      })[entry.source.name]
+      return vim_item
+    end,
   },
-  sources = {
+  confirm_opts = {
+    behavior = cmp.ConfirmBehavior.Replace,
+    select = false,
+  },
+  sources = cmp.config.sources({
     { name = 'nvim_lsp' },
+    { name = 'nvim_lua' },
+    { name = 'path' },
     { name = 'luasnip' },
-  },
-}
+    { name = 'buffer' , keyword_length = 5 },
+  })
+})
+
+
+cmp.event:on(
+  'confirm_done',
+  cmp_autopairs.on_confirm_done({
+    filetypes = {
+      -- "*" is a alias to all filetypes
+      ["*"] = {
+        ["("] = {
+          kind = {
+            cmp.lsp.CompletionItemKind.Function,
+            cmp.lsp.CompletionItemKind.Method,
+          },
+          handler = handlers["*"]
+        }
+      },
+      lua = {
+        ["("] = {
+          kind = {
+            cmp.lsp.CompletionItemKind.Function,
+            cmp.lsp.CompletionItemKind.Method
+          },
+          handler = handlers["*"]            -- Your handler function. Inpect with print(vim.inspect{char, item, bufnr, rules, commit_character})
+        }
+      },
+      -- Disable for tex
+      tex = false
+    }
+  })
+)
+
+
