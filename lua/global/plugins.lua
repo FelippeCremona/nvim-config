@@ -11,6 +11,21 @@ require('packer').startup(function(use)
   -- Package manager
   use 'wbthomason/packer.nvim'
 
+  -- Colorcheme
+  use "tanvirtin/monokai.nvim"
+  use "cpea2506/one_monokai.nvim"
+  use "gruvbox-community/gruvbox"
+  use "lunarvim/darkplus.nvim"
+  use "catppuccin/nvim"
+  use {"rose-pine/neovim", as = 'rose-pine'}
+  use 'folke/tokyonight.nvim'
+  use 'navarasu/onedark.nvim' -- Theme inspired by Atom
+  use 'tjdevries/colorbuddy.vim'
+  use {'tjdevries/gruvbuddy.nvim', requires = {'tjdevries/colorbuddy.vim'}}
+  use 'Mofiqul/dracula.nvim'
+  use 'olimorris/onedarkpro.nvim'
+  use 'azemoh/vscode-one-monokai'
+
   use {
     'VonHeikemen/lsp-zero.nvim',
     requires = {
@@ -23,7 +38,9 @@ require('packer').startup(function(use)
       {"mfussenegger/nvim-jdtls"},
       {"mfussenegger/nvim-dap"},
       {"rcarriga/cmp-dap"},
-
+      { "rcarriga/nvim-dap-ui",
+        requires = {"mfussenegger/nvim-dap"},
+      },
       -- Autocompletion
       {'hrsh7th/nvim-cmp'},
       {'hrsh7th/cmp-buffer'},
@@ -75,12 +92,17 @@ require('packer').startup(function(use)
   use 'tpope/vim-fugitive'
   use 'tpope/vim-rhubarb'
   use 'lewis6991/gitsigns.nvim'
+  use 'f-person/git-blame.nvim'
 
-  use 'navarasu/onedark.nvim' -- Theme inspired by Atom
   use 'nvim-lualine/lualine.nvim' -- Fancier statusline
   use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
   use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
   use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
+
+  use 'NvChad/nvim-colorizer.lua'
+  use "kylechui/nvim-surround" -- Surround
+  use 'kdheepak/lazygit.nvim'
+  use 'mbbill/undotree'
 
   -- Fuzzy Finder (files, lsp, etc)
   use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }

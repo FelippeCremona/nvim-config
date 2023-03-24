@@ -8,8 +8,6 @@ vim.opt.fillchars:append {
   stl = ' ',
 }
 
-vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl='', numhl=''})
-
 vim.opt.shortmess:append "c"
 
 vim.cmd "set whichwrap+=<,>,[,],h,l"
@@ -39,7 +37,9 @@ vim.wo.signcolumn = 'yes'
 
 -- Set colorscheme
 vim.o.termguicolors = true
-vim.cmd [[colorscheme onedark]]
+-- vim.cmd [[colorscheme onedark]]
+vim.cmd[[colorscheme lunaperche]]
+-- require('colorbuddy').colorscheme('gruvbuddy')
 
 -- Set completeopt to have a better completion experience
 -- vim.o.completeopt = 'menuone,noselect'

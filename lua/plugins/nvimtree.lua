@@ -1,5 +1,5 @@
 -- empty setup using defaults
-require("nvim-tree").setup()
+-- require("nvim-tree").setup()
 
 -- OR setup with some options
 require("nvim-tree").setup({
@@ -15,8 +15,12 @@ require("nvim-tree").setup({
   renderer = {
     group_empty = true,
   },
+  update_focused_file = {
+    enable = true,
+    update_cwd = false,
+    ignore_list = {},
+  },
   filters = {
-    dotfiles = true,
+    dotfiles = false,
   },
 })
-
