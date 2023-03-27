@@ -20,8 +20,6 @@ require('packer').startup(function(use)
   use {"rose-pine/neovim", as = 'rose-pine'}
   use 'folke/tokyonight.nvim'
   use 'navarasu/onedark.nvim' -- Theme inspired by Atom
-  use 'tjdevries/colorbuddy.vim'
-  use {'tjdevries/gruvbuddy.nvim', requires = {'tjdevries/colorbuddy.vim'}}
   use 'Mofiqul/dracula.nvim'
   use 'olimorris/onedarkpro.nvim'
   use 'azemoh/vscode-one-monokai'
@@ -103,6 +101,12 @@ require('packer').startup(function(use)
   use "kylechui/nvim-surround" -- Surround
   use 'kdheepak/lazygit.nvim'
   use 'mbbill/undotree'
+
+  use 'dstein64/vim-startuptime'
+
+  -- Banco de Dados
+  use 'tpope/vim-dadbod'
+  use 'kristijanhusak/vim-dadbod-ui'
 
   -- Fuzzy Finder (files, lsp, etc)
   use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }

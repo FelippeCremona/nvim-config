@@ -114,6 +114,16 @@ _G.packer_plugins = {
     path = "/home/cremona/.local/share/nvim/site/pack/packer/start/cmp_luasnip",
     url = "https://github.com/saadparwaiz1/cmp_luasnip"
   },
+  ["darkplus.nvim"] = {
+    loaded = true,
+    path = "/home/cremona/.local/share/nvim/site/pack/packer/start/darkplus.nvim",
+    url = "https://github.com/lunarvim/darkplus.nvim"
+  },
+  ["dracula.nvim"] = {
+    loaded = true,
+    path = "/home/cremona/.local/share/nvim/site/pack/packer/start/dracula.nvim",
+    url = "https://github.com/Mofiqul/dracula.nvim"
+  },
   ["fidget.nvim"] = {
     loaded = true,
     path = "/home/cremona/.local/share/nvim/site/pack/packer/start/fidget.nvim",
@@ -124,10 +134,20 @@ _G.packer_plugins = {
     path = "/home/cremona/.local/share/nvim/site/pack/packer/start/friendly-snippets",
     url = "https://github.com/rafamadriz/friendly-snippets"
   },
+  ["git-blame.nvim"] = {
+    loaded = true,
+    path = "/home/cremona/.local/share/nvim/site/pack/packer/start/git-blame.nvim",
+    url = "https://github.com/f-person/git-blame.nvim"
+  },
   ["gitsigns.nvim"] = {
     loaded = true,
     path = "/home/cremona/.local/share/nvim/site/pack/packer/start/gitsigns.nvim",
     url = "https://github.com/lewis6991/gitsigns.nvim"
+  },
+  gruvbox = {
+    loaded = true,
+    path = "/home/cremona/.local/share/nvim/site/pack/packer/start/gruvbox",
+    url = "https://github.com/gruvbox-community/gruvbox"
   },
   harpoon = {
     loaded = true,
@@ -138,6 +158,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/cremona/.local/share/nvim/site/pack/packer/start/indent-blankline.nvim",
     url = "https://github.com/lukas-reineke/indent-blankline.nvim"
+  },
+  ["lazygit.nvim"] = {
+    loaded = true,
+    path = "/home/cremona/.local/share/nvim/site/pack/packer/start/lazygit.nvim",
+    url = "https://github.com/kdheepak/lazygit.nvim"
   },
   ["lsp-zero.nvim"] = {
     loaded = true,
@@ -159,10 +184,20 @@ _G.packer_plugins = {
     path = "/home/cremona/.local/share/nvim/site/pack/packer/start/mason.nvim",
     url = "https://github.com/williamboman/mason.nvim"
   },
+  ["monokai.nvim"] = {
+    loaded = true,
+    path = "/home/cremona/.local/share/nvim/site/pack/packer/start/monokai.nvim",
+    url = "https://github.com/tanvirtin/monokai.nvim"
+  },
   ["neodev.nvim"] = {
     loaded = true,
     path = "/home/cremona/.local/share/nvim/site/pack/packer/start/neodev.nvim",
     url = "https://github.com/folke/neodev.nvim"
+  },
+  nvim = {
+    loaded = true,
+    path = "/home/cremona/.local/share/nvim/site/pack/packer/start/nvim",
+    url = "https://github.com/catppuccin/nvim"
   },
   ["nvim-autopairs"] = {
     config = { "\27LJ\2\2@\0\0\2\0\3\0\a6\0\0\0'\1\1\0B\0\2\0029\0\2\0004\1\0\0B\0\2\1K\0\1\0\nsetup\19nvim-autopairs\frequire\0" },
@@ -175,10 +210,20 @@ _G.packer_plugins = {
     path = "/home/cremona/.local/share/nvim/site/pack/packer/start/nvim-cmp",
     url = "https://github.com/hrsh7th/nvim-cmp"
   },
+  ["nvim-colorizer.lua"] = {
+    loaded = true,
+    path = "/home/cremona/.local/share/nvim/site/pack/packer/start/nvim-colorizer.lua",
+    url = "https://github.com/NvChad/nvim-colorizer.lua"
+  },
   ["nvim-dap"] = {
     loaded = true,
     path = "/home/cremona/.local/share/nvim/site/pack/packer/start/nvim-dap",
     url = "https://github.com/mfussenegger/nvim-dap"
+  },
+  ["nvim-dap-ui"] = {
+    loaded = true,
+    path = "/home/cremona/.local/share/nvim/site/pack/packer/start/nvim-dap-ui",
+    url = "https://github.com/rcarriga/nvim-dap-ui"
   },
   ["nvim-jdtls"] = {
     loaded = true,
@@ -189,6 +234,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/cremona/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
     url = "https://github.com/neovim/nvim-lspconfig"
+  },
+  ["nvim-surround"] = {
+    loaded = true,
+    path = "/home/cremona/.local/share/nvim/site/pack/packer/start/nvim-surround",
+    url = "https://github.com/kylechui/nvim-surround"
   },
   ["nvim-tree.lua"] = {
     loaded = true,
@@ -212,10 +262,20 @@ _G.packer_plugins = {
     path = "/home/cremona/.local/share/nvim/site/pack/packer/start/nvim-web-devicons",
     url = "https://github.com/nvim-tree/nvim-web-devicons"
   },
+  ["one_monokai.nvim"] = {
+    loaded = true,
+    path = "/home/cremona/.local/share/nvim/site/pack/packer/start/one_monokai.nvim",
+    url = "https://github.com/cpea2506/one_monokai.nvim"
+  },
   ["onedark.nvim"] = {
     loaded = true,
     path = "/home/cremona/.local/share/nvim/site/pack/packer/start/onedark.nvim",
     url = "https://github.com/navarasu/onedark.nvim"
+  },
+  ["onedarkpro.nvim"] = {
+    loaded = true,
+    path = "/home/cremona/.local/share/nvim/site/pack/packer/start/onedarkpro.nvim",
+    url = "https://github.com/olimorris/onedarkpro.nvim"
   },
   ["packer.nvim"] = {
     loaded = true,
@@ -226,6 +286,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/cremona/.local/share/nvim/site/pack/packer/start/plenary.nvim",
     url = "https://github.com/nvim-lua/plenary.nvim"
+  },
+  ["rose-pine"] = {
+    loaded = true,
+    path = "/home/cremona/.local/share/nvim/site/pack/packer/start/rose-pine",
+    url = "https://github.com/rose-pine/neovim"
   },
   ["telescope-fzf-native.nvim"] = {
     cond = { true },
@@ -239,6 +304,26 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/cremona/.local/share/nvim/site/pack/packer/start/telescope.nvim",
     url = "https://github.com/nvim-telescope/telescope.nvim"
+  },
+  ["tokyonight.nvim"] = {
+    loaded = true,
+    path = "/home/cremona/.local/share/nvim/site/pack/packer/start/tokyonight.nvim",
+    url = "https://github.com/folke/tokyonight.nvim"
+  },
+  undotree = {
+    loaded = true,
+    path = "/home/cremona/.local/share/nvim/site/pack/packer/start/undotree",
+    url = "https://github.com/mbbill/undotree"
+  },
+  ["vim-dadbod"] = {
+    loaded = true,
+    path = "/home/cremona/.local/share/nvim/site/pack/packer/start/vim-dadbod",
+    url = "https://github.com/tpope/vim-dadbod"
+  },
+  ["vim-dadbod-ui"] = {
+    loaded = true,
+    path = "/home/cremona/.local/share/nvim/site/pack/packer/start/vim-dadbod-ui",
+    url = "https://github.com/kristijanhusak/vim-dadbod-ui"
   },
   ["vim-fugitive"] = {
     loaded = true,
@@ -254,6 +339,16 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/cremona/.local/share/nvim/site/pack/packer/start/vim-sleuth",
     url = "https://github.com/tpope/vim-sleuth"
+  },
+  ["vim-startuptime"] = {
+    loaded = true,
+    path = "/home/cremona/.local/share/nvim/site/pack/packer/start/vim-startuptime",
+    url = "https://github.com/dstein64/vim-startuptime"
+  },
+  ["vscode-one-monokai"] = {
+    loaded = true,
+    path = "/home/cremona/.local/share/nvim/site/pack/packer/start/vscode-one-monokai",
+    url = "https://github.com/azemoh/vscode-one-monokai"
   }
 }
 

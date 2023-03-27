@@ -1,8 +1,3 @@
--- vim.g.loaded_netrw = 1
--- vim.g.loaded_netrwPlugin = 1
--- vim.opt.fillchars.eob = " "
--- vim.opt.fillchars = vim.opt.fillchars + "vertleft: "
--- vim.opt.fillchars = vim.opt.fillchars + "vertright: "
 vim.opt.fillchars = vim.opt.fillchars + 'eob: '
 vim.opt.fillchars:append {
   stl = ' ',
@@ -22,7 +17,6 @@ vim.filetype.add {
 
 vim.g.python3_host_prog = '/usr/bin/python3.9'
 
-
 -- disable netrw at the very start of your init.lua (strongly advised)
 vim.g.loaded_netrw = 0
 vim.g.loaded_netrwPlugin = 0
@@ -37,9 +31,7 @@ vim.wo.signcolumn = 'yes'
 
 -- Set colorscheme
 vim.o.termguicolors = true
--- vim.cmd [[colorscheme onedark]]
-vim.cmd[[colorscheme lunaperche]]
--- require('colorbuddy').colorscheme('gruvbuddy')
+vim.cmd[[colorscheme monokai_pro]]
 
 -- Set completeopt to have a better completion experience
 -- vim.o.completeopt = 'menuone,noselect'
@@ -83,8 +75,6 @@ local options = {
   sidescrolloff = 8,
   guifont = "monospace:h17",                -- the font used in graphical neovim applications
   title = true,
-  -- colorcolumn = "80",
-  -- colorcolumn = "120",
 
 }
 

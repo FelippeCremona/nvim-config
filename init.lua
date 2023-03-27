@@ -1,10 +1,11 @@
+-- Global
 require("global.plugins")
 require("global.options")
 require("global.keymaps")
 require("global.functions")
-require("global.autocommands")
 
-require("plugins.cmp")
+-- Plugins
+require("plugins.comp")
 require("plugins.colorizer")
 require("plugins.surround")
 require("plugins.dap-ui")

@@ -29,5 +29,5 @@ vim.keymap.set('n', '<space>sf', require('telescope.builtin').find_files, { desc
 vim.keymap.set('n', '<space>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<space>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<space>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
-vim.keymap.set('n', ',gf', require('telescope.builtin').git_files, { desc = '[G]it by [F]iles' })
+vim.keymap.set('n', ',sg', require('telescope.builtin').git_files, { desc = '[S]earch [G]it' })
 vim.keymap.set('n', '<space>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })

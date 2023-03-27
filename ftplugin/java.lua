@@ -1,4 +1,4 @@
-local jdtls_ok, jdtls = pcall(require, "jdtls")
+local jdtls_ok  = pcall(require, "jdtls")
 if not jdtls_ok then
   vim.notify "JDTLS not found, install with `:LspInstall jdtls`"
   return
@@ -11,14 +11,11 @@ local path_to_plugins = jdtls_path .. "/plugins/"
 local path_to_jar = path_to_plugins .. "org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar"
 local lombok_path = jdtls_path .. "/lombok.jar"
 
--- local root_markers = { ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }
--- local root_markers = { ".git", "pom.xml" }
 local root_markers = { ".git" }
 local root_dir = require("jdtls.setup").find_root(root_markers)
 if root_dir == "" then
   return
 end
--- local root_dir = "/home/cremona/trabalho/caixa/sistemas/sinaf/des/naf-web"
 
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
 
@@ -97,10 +94,6 @@ local config = {
             name = "JavaSE-11",
             path = "~/.sdkman/candidates/java/11.0.2-open",
           }
-          -- {
-          --   name = "JavaSE-17",
-          --   path = "/Users/ivanermolaev/Library/Java/JavaVirtualMachines/temurin-17.0.4/Contents/Home",
-          -- }
         }
       },
       maven = {
@@ -166,27 +159,9 @@ local config = {
   },
 }
 
--- vim.api.nvim_create_autocmd({ "BufWritePost" }, {
---   pattern = { "*.java" },
---   callback = function()
---     local _, _ = pcall(vim.lsp.codelens.refresh)
---   end,
--- })
-
--- vim.list_extend(vim.lsp.automatic_configuration.skipped_servers, { "jdtls" })
-
-config['on_attach'] = function(client, bufnr)
+config['on_attach'] = function()
   require("jdtls.dap").setup_dap_main_class_configs()
   require("jdtls").setup_dap({ hotcodereplace = "auto" })
-  require'keymaps'.map_java_keys(bufnr);
-  require "lsp_signature".on_attach({
-    bind = true, -- This is mandatory, otherwise border config won't get registered.
-    floating_window_above_cur_line = false,
-    padding = '',
-    handler_opts = {
-      border = "rounded"
-    }
-  }, bufnr)
 end
 
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
@@ -203,8 +178,3 @@ require('jdtls').start_or_attach(config)
 vim.cmd "command! -buffer -nargs=? -complete=custom,v:lua.require'jdtls'._complete_compile JdtCompile lua require('jdtls').compile(<f-args>)"
 vim.cmd "command! -buffer -nargs=? -complete=custom,v:lua.require'jdtls'._complete_set_runtime JdtSetRuntime lua require('jdtls').set_runtime(<f-args>)"
 vim.cmd "command! -buffer JdtUpdateConfig lua require('jdtls').update_project_config()"
-
--- vim.cmd(
---   [[command! -buffer -nargs=? -complete=custom,v:lua.require'jdtls'._complete_set_runtime JdtSetRuntime lua require('jdtls').set_runtime(<f-args>)]]
--- )
--- vim.cmd([[command! -buffer JdtUpdateConfig lua require('jdtls').update_project_config()]])
