@@ -12,15 +12,11 @@ local keymap = vim.keymap.set
 keymap("i", "<C-c>", "<Esc>", opts)
 
 -- Normal --
-keymap("n", "<C-Space>", "<cmd>WhichKey \\<space><cr>", opts)
--- keymap("n", "<C-i>", "<C-i>", opts)
-
-
 keymap("n", "tt", "zt", opts)
 
 
 -- copia a linha inteira sem pular de linha
-keymap("n", "<C-y>", "_v$y", opts)
+keymap("n", "<C-c>", "_v$y", opts)
 
 keymap("n", "<C-t>", "<cmd>:terminal<cr>i", opts)
 
@@ -31,6 +27,10 @@ keymap("n", ",af", "va{=<C-o>", opts)
 keymap("n", "<Space>df", "Vf{%d", opts)
 keymap("n", "<Space>yf", "Vf{%y", opts)
 
+
+-- Split
+keymap('n', 'ss', ':split<Return><C-w>w', opts)
+keymap('n', 'sv', ':vsplit<Return><C-w>w', opts)
 
 -- Better window navigation
 keymap("n", "<m-h>", "<C-w>h", opts)
@@ -56,15 +56,6 @@ keymap("v", "<Right>", ">gv", opts)
 
 keymap("v", "p", '"_dP', opts)
 
-keymap("n", "<F7>", "<cmd>TSHighlightCapturesUnderCursor<cr>", opts)
-
-keymap("n", "-", ":lua require'lir.float'.toggle()<cr>", opts)
-keymap("n", "gx", [[:silent execute '!$BROWSER ' . shellescape(expand('<cfile>'), 1)<CR>]], opts)
-keymap("n", "<m-v>", "<cmd>lua require('lsp_lines').toggle()<cr>", opts)
-
-keymap("n", "<m-/>", "<cmd>lua require('Comment.api').toggle_current_linewise()<CR>", opts)
-keymap("x", "<m-/>", '<ESC><CMD>lua require("Comment.api").toggle_linewise_op(vim.fn.visualmode())<CR>', opts)
-
 vim.api.nvim_set_keymap(
   "n",
   "<A-t>",
@@ -88,10 +79,7 @@ vim.cmd [[
   endfunction
 ]]
 
-keymap("n", "<m-q>", ":call QuickFixToggle()<cr>", opts)
-
--- keymap("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>", opts)
--- keymap("n", "<leader>s", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>", opts)
+-- keymap("n", "<m-q>", ":call QuickFixToggle()<cr>", opts)
 
 M.show_documentation = function()
   local filetype = vim.bo.filetype
@@ -178,4 +166,6 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
 
+-- LazyGit
+keymap("n", "<space>gg", "<cmd>LazyGit<cr>", opts)
 return M
