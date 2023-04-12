@@ -8,5 +8,8 @@
         "/home/cremona/.local/share/lunarvim/site/pack/packer/start/plenary.nvim/lua",
         "/home/cremona/.local/share/lunarvim/site/pack/packer/start/telescope.nvim/lua",
         "${3rd}/luassert/library"
+    ],
+    "diagnostics.globals": [
+        "on_attach"
     ]
 }

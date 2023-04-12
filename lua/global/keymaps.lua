@@ -18,8 +18,8 @@ keymap("n", "tt", "zt", opts)
 -- copia a linha inteira sem pular de linha
 keymap("n", "<C-c>", "_v$y", opts)
 
-keymap("n", "<C-t>", "<cmd>:terminal<cr>i", opts)
-
+-- keymap("n", "<C-t>", "<cmd>:terminal<cr>i", opts)
+-- keymap("n", "<C-t>", ":sp<cr>:resize -10<cr>:terminal<cr>i", opts)
 
 keymap("n", ",at", "vat=<C-o>", opts)
 keymap("n", ",af", "va{=<C-o>", opts)
@@ -27,10 +27,8 @@ keymap("n", ",af", "va{=<C-o>", opts)
 keymap("n", "<Space>df", "Vf{%d", opts)
 keymap("n", "<Space>yf", "Vf{%y", opts)
 
-
--- Split
-keymap('n', 'ss', ':split<Return><C-w>w', opts)
-keymap('n', 'sv', ':vsplit<Return><C-w>w', opts)
+-- Select all
+keymap('n', '<C-a>', 'gg<S-v>G', opts)
 
 -- Better window navigation
 keymap("n", "<m-h>", "<C-w>h", opts)

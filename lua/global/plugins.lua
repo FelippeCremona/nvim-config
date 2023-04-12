@@ -101,14 +101,14 @@ require('packer').startup(function(use)
 
   use 'NvChad/nvim-colorizer.lua'
   use "kylechui/nvim-surround" -- Surround
-  use 'kdheepak/lazygit.nvim'
-  use 'mbbill/undotree'
-
-  use 'dstein64/vim-startuptime'
+  use {'kdheepak/lazygit.nvim', opt = true, cmd = {'LazyGit', 'LazyGitConfig', 'LazyGitCurrentFile', 'LazyGitFilter', 'LazyGitFilterCurrentFile'}}
+  use {'mbbill/undotree', opt = true, cmd = {'UndotreeToggle'}}
+  use {"akinsho/toggleterm.nvim", tag = '*'}
+  -- use 'dstein64/vim-startuptime'
 
   -- Banco de Dados
-  use 'tpope/vim-dadbod'
-  use 'kristijanhusak/vim-dadbod-ui'
+  -- use 'tpope/vim-dadbod'
+  -- use 'kristijanhusak/vim-dadbod-ui'
 
   -- Fuzzy Finder (files, lsp, etc)
   use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
