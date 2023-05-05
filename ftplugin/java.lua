@@ -1,11 +1,6 @@
-local jdtls_ok  = pcall(require, "jdtls")
-if not jdtls_ok then
-  vim.notify "JDTLS not found, install with `:LspInstall jdtls`"
-  return
-end
-
 -- See `:help vim.lsp.start_client` for an overview of the supported `config` options.
 local jdtls_path = vim.fn.stdpath('data') .. "/mason/packages/jdtls"
+-- local jdtls_path = "~/.local/share/lvim/mason/packages/jdtls"
 local path_to_lsp_server = jdtls_path .. "/config_linux"
 local path_to_plugins = jdtls_path .. "/plugins/"
 local path_to_jar = path_to_plugins .. "org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar"
@@ -185,3 +180,4 @@ require('jdtls').start_or_attach(config)
 -- vim.cmd "command! -buffer -nargs=? -complete=custom,v:lua.require'jdtls'._complete_compile JdtCompile lua require('jdtls').compile(<f-args>)"
 -- vim.cmd "command! -buffer -nargs=? -complete=custom,v:lua.require'jdtls'._complete_set_runtime JdtSetRuntime lua require('jdtls').set_runtime(<f-args>)"
 -- vim.cmd "command! -buffer JdtUpdateConfig lua require('jdtls').update_project_config()"
+
