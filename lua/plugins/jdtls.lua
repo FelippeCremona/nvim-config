@@ -20,7 +20,7 @@ require('dap').configurations.java = {
 
 require'lspconfig'.jdtls.setup{
     cmd = {
-    'javafdjaks',
+    'java',
     '-Declipse.application=org.eclipse.jdt.ls.core.id1',
     '-Dosgi.bundles.defaultStartLevel=4',
     '-Declipse.product=org.eclipse.jdt.ls.core.product',
@@ -36,5 +36,5 @@ require'lspconfig'.jdtls.setup{
     '-configuration', path_to_lsp_server,
     '-data', workspace_dir,
     },
-    filetypes = {"odd!"}
+    -- filetypes = {"odd!"}
   }

@@ -23,6 +23,7 @@ require('packer').startup(function(use)
   use 'Mofiqul/dracula.nvim'
   use 'olimorris/onedarkpro.nvim'
   use 'azemoh/vscode-one-monokai'
+  use "rebelot/kanagawa.nvim"
 
   use {
     'VonHeikemen/lsp-zero.nvim',

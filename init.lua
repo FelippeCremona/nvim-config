@@ -3,6 +3,7 @@ require("global.plugins")
 require("global.options")
 require("global.keymaps")
 require("global.functions")
+-- require("global.autocommands2")
 
 -- Plugins
 require("plugins.comp")
