@@ -28,7 +28,7 @@ keymap("n", "<Space>df", "Vf{%d", opts)
 keymap("n", "<Space>yf", "Vf{%y", opts)
 
 -- Select all
-keymap('n', '<C-a>', 'gg<S-v>G', opts)
+-- keymap('n', '<C-a>', 'gg<S-v>G', opts)
 
 -- Better window navigation
 keymap("n", "<m-h>", "<C-w>h", opts)

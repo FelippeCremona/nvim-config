@@ -8,7 +8,24 @@ require('telescope').setup {
         ['<C-d>'] = false,
       },
     },
+    layout_config = {
+      horizontal = { width = 0.99, height = 100 },
+      -- vertical = { width = 0.99 }
+      -- other layout configuration here
+    },
+    path_display = {"smart"},
+    cycle_layout_list = {
+
+    }
   },
+  -- pickers = {
+  --   find_files = {
+  --     theme = "dropdown",
+  --   },
+  --   live_grep = {
+  --     theme = "dropdown",
+  --   }
+  -- },
 }
 
 -- Enable telescope fzf native, if installed

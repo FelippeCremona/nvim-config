@@ -1,33 +1,36 @@
--- Install packer
-local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
-local is_bootstrap = false
-if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-  is_bootstrap = true
-  vim.fn.system { 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path }
-  vim.cmd [[packadd packer.nvim]]
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
 end
+vim.opt.rtp:prepend(lazypath)
 
-require('packer').startup(function(use)
-  -- Package manager
-  use 'wbthomason/packer.nvim'
+require('lazy').setup({
 
   -- Colorcheme
-  use "tanvirtin/monokai.nvim"
-  use "cpea2506/one_monokai.nvim"
-  use "gruvbox-community/gruvbox"
-  use "lunarvim/darkplus.nvim"
-  use "catppuccin/nvim"
-  use {"rose-pine/neovim", as = 'rose-pine'}
-  use 'folke/tokyonight.nvim'
-  use 'navarasu/onedark.nvim' -- Theme inspired by Atom
-  use 'Mofiqul/dracula.nvim'
-  use 'olimorris/onedarkpro.nvim'
-  use 'azemoh/vscode-one-monokai'
-  use "rebelot/kanagawa.nvim"
+  "tanvirtin/monokai.nvim",
+  -- "cpea2506/one_monokai.nvim",
+  -- "gruvbox-community/gruvbox",
+  -- "lunarvim/darkplus.nvim",
+  -- "catppuccin/nvim",
+  -- {"rose-pine/neovim", as = 'rose-pine'},
+  -- 'folke/tokyonight.nvim',
+  -- 'navarasu/onedark.nvim', -- Theme inspired by Atom
+  'Mofiqul/dracula.nvim',
+  -- 'olimorris/onedarkpro.nvim',
+  -- 'azemoh/vscode-one-monokai',
+  -- "rebelot/kanagawa.nvim",
 
-  use {
+  {
     'VonHeikemen/lsp-zero.nvim',
-    requires = {
+    lazy = true,
+    dependencies = {
       -- LSP Support
       {'neovim/nvim-lspconfig'},
       {'williamboman/mason.nvim'},
@@ -38,7 +41,7 @@ require('packer').startup(function(use)
       {"mfussenegger/nvim-dap"},
       {"rcarriga/cmp-dap"},
       { "rcarriga/nvim-dap-ui",
-        requires = {"mfussenegger/nvim-dap"},
+        dependencies = {"mfussenegger/nvim-dap"},
       },
       -- Autocompletion
       {'hrsh7th/nvim-cmp'},
@@ -49,10 +52,10 @@ require('packer').startup(function(use)
       {'hrsh7th/cmp-nvim-lua'},
 
       -- Useful status updates for LSP
-      'j-hui/fidget.nvim',
+      {'j-hui/fidget.nvim', tag = 'legacy'},
 
       -- Additional lua configuration, makes nvim stuff amazing
-      'folke/neodev.nvim',
+      -- 'folke/neodev.nvim',
 
       -- Snippets
       {'L3MON4D3/LuaSnip'},
@@ -60,91 +63,62 @@ require('packer').startup(function(use)
 
       {'weilbith/nvim-code-action-menu', cmd = 'CodeActionMenu'}
     }
-  }
+  },
 
-  use { -- Highlight, edit, and navigate code
+  { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
-    run = function()
+    lazy = true,
+    build = function()
       pcall(require('nvim-treesitter.install').update { with_sync = true })
     end,
-  }
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter-textobjects',
+    }
+  },
 
-  use { -- Additional text objects via treesitter
-    'nvim-treesitter/nvim-treesitter-textobjects',
-    after = 'nvim-treesitter',
-  }
-
-  use {
+  {
     'nvim-tree/nvim-tree.lua',
-    requires = {
+    lazy = true,
+    dependencies = {
       'nvim-tree/nvim-web-devicons', -- optional, for file icons
     },
     tag = 'nightly' -- optional, updated every week. (see issue #1193)
-  }
+  },
 
-  use {
+  {
     "windwp/nvim-autopairs",
     config = function() require("nvim-autopairs").setup {} end
-  }
+  },
 
-  use "christianchiarulli/harpoon"
+  "christianchiarulli/harpoon",
 
   -- Git related plugins
-  use 'tpope/vim-fugitive'
-  use 'tpope/vim-rhubarb'
-  use 'lewis6991/gitsigns.nvim'
-  use 'f-person/git-blame.nvim'
+  'tpope/vim-fugitive',
+  'tpope/vim-rhubarb',
+  'lewis6991/gitsigns.nvim',
+  'f-person/git-blame.nvim',
 
-  use 'nvim-lualine/lualine.nvim' -- Fancier statusline
-  use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
-  use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
-  use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
+  'nvim-lualine/lualine.nvim', -- Fancier statusline
+  'lukas-reineke/indent-blankline.nvim', -- Add indentation guides even on blank lines
+  'numToStr/Comment.nvim', -- "gc" to comment visual regions/lines
+  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
-  use 'NvChad/nvim-colorizer.lua'
-  use "kylechui/nvim-surround" -- Surround
-  use {'kdheepak/lazygit.nvim', opt = true, cmd = {'LazyGit', 'LazyGitConfig', 'LazyGitCurrentFile', 'LazyGitFilter', 'LazyGitFilterCurrentFile'}}
-  use {'mbbill/undotree', opt = true, cmd = {'UndotreeToggle'}}
-  use {"akinsho/toggleterm.nvim", tag = '*'}
-  -- use 'dstein64/vim-startuptime'
-
+  'NvChad/nvim-colorizer.lua',
+  "kylechui/nvim-surround", -- Surround
+  {'kdheepak/lazygit.nvim', opt = true, cmd = {'LazyGit', 'LazyGitConfig', 'LazyGitCurrentFile', 'LazyGitFilter', 'LazyGitFilterCurrentFile'}},
+  {'mbbill/undotree', opt = true, cmd = {'UndotreeToggle'}},
+  {
+    -- amongst your other plugins
+    {'akinsho/toggleterm.nvim', version = "*", config = true}
+  },
   -- Banco de Dados
   -- use 'tpope/vim-dadbod'
   -- use 'kristijanhusak/vim-dadbod-ui'
 
   -- Fuzzy Finder (files, lsp, etc)
-  use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
+  { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },
 
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
-  use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
+  { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make', cond = vim.fn.executable 'make' == 1 },
 
-  -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
-  local has_plugins, plugins = pcall(require, 'custom.plugins')
-  if has_plugins then
-    plugins(use)
-  end
-
-  if is_bootstrap then
-    require('packer').sync()
-  end
-end)
-
--- When we are bootstrapping a configuration, it doesn't
--- make sense to execute the rest of the init.lua.
---
--- You'll need to restart nvim, and then it will work.
-if is_bootstrap then
-  print '=================================='
-  print '    Plugins are being installed'
-  print '    Wait until Packer completes,'
-  print '       then restart nvim'
-  print '=================================='
-  return
-end
-
--- Automatically source and re-compile packer whenever you save this init.lua
-local packer_group = vim.api.nvim_create_augroup('Packer', { clear = true })
-vim.api.nvim_create_autocmd('BufWritePost', {
-  command = 'source <afile> | PackerCompile',
-  group = packer_group,
-  pattern = vim.fn.expand '$MYVIMRC',
 })

@@ -1,5 +1,7 @@
 -- See `:help vim.lsp.start_client` for an overview of the supported `config` options.
 local jdtls_path = vim.fn.stdpath('data') .. "/mason/packages/jdtls"
+
+-- local jdtls_path = "/home/cremona/trabalho/programas/jdtls"
 -- local jdtls_path = "~/.local/share/lvim/mason/packages/jdtls"
 local path_to_lsp_server = jdtls_path .. "/config_linux"
 local path_to_plugins = jdtls_path .. "/plugins/"
