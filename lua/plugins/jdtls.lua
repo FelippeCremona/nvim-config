@@ -1,4 +1,4 @@
-local jdtls_path = vim.fn.stdpath('data') .. "/mason/packages/jdtls"
+local jdtls_path = "/home/cremona/trabalho/programas/jdtls"
 local path_to_lsp_server = jdtls_path .. "/config_linux"
 local path_to_plugins = jdtls_path .. "/plugins/"
 local path_to_jar = path_to_plugins .. "org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar"
@@ -62,18 +62,15 @@ require'lspconfig'.jdtls.setup{
         updateBuildConfiguration = "interactive",
         runtimes = {
           {
-            name = "JavaSE-17",
-            path = "~/.sdkman/candidates/java/17-open",
-          },
-          {
-            name = "JavaSE-19",
-            path = "~/.sdkman/candidates/java/19-open",
-          },
-          {
             name = "JavaSE-11",
-            path = "~/.sdkman/candidates/java/11.0.2-open",
-          }
-        }
+            path = "~/.sdkman/candidates/java/11.0.17-tem",
+          },
+          {
+            name = "JavaSE-18",
+            path = "~/.sdkman/candidates/java/18.0.2-sem",
+          },
+        },
+      },
       },
       maven = {
         downloadSources = true,

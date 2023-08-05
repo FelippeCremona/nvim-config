@@ -7,6 +7,7 @@ require("global.functions")
 
 -- Plugins
 require("plugins.comp")
+-- require("plugins.cmp")
 require("plugins.colorizer")
 require("plugins.surround")
 require("plugins.dap-ui")

@@ -1,20 +1,20 @@
-vim.opt.fillchars = vim.opt.fillchars + 'eob: '
-vim.opt.fillchars:append {
-  stl = ' ',
-}
-
-vim.opt.shortmess:append "c"
-
-vim.cmd "set whichwrap+=<,>,[,],h,l"
-vim.cmd [[set iskeyword+=-]]
-vim.cmd [[set formatoptions-=cro]] -- TODO: this doesn't seem to work
-
-vim.filetype.add {
-  extension = {
-    conf = "dosini",
-  },
-}
-
+-- vim.opt.fillchars = vim.opt.fillchars + 'eob: '
+-- vim.opt.fillchars:append {
+--   stl = ' ',
+-- }
+--
+-- vim.opt.shortmess:append "c"
+--
+-- vim.cmd "set whichwrap+=<,>,[,],h,l"
+-- vim.cmd [[set iskeyword+=-]]
+-- vim.cmd [[set formatoptions-=cro]] -- TODO: this doesn't seem to work
+--
+-- vim.filetype.add {
+--   extension = {
+--     conf = "dosini",
+--   },
+-- }
+--
 vim.g.clipboard = {
    name = 'WslClipboard',
    copy = {
@@ -22,8 +22,8 @@ vim.g.clipboard = {
       ['*'] = 'clip.exe',
    },
    paste = {
-      ['+'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring())',
-      ['*'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring())',
+      ['+'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+      ['*'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
    },
    cache_enabled = 0,
 }
@@ -53,7 +53,7 @@ vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 
 local options = {
   backup = false,                          -- creates a backup file
-  clipboard = "unnamed",                   -- allows neovim to access the system clipboard
+  clipboard = {"unnamed", "unnamedplus"},                   -- allows neovim to access the system clipboard
   cmdheight = 0,                           -- more space in the neovim command line for displaying messages
   completeopt = { "menuone", "noselect" }, -- mostly just for cmp
   conceallevel = 0,                        -- so that `` is visible in markdown files fileencoding = "utf-8",                   -- the encoding written to a file

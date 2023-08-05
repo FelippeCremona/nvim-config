@@ -78,16 +78,18 @@ cmp.setup({
     behavior = cmp.ConfirmBehavior.Replace,
     select = false,
   },
-  sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-    { name = 'nvim_lua' },
-    { name = 'path' },
-    { name = 'luasnip' },
-    { name = 'buffer' , keyword_length = 5 },
-  })
-})
+  -- sources = cmp.config.sources({
+  --   { name = 'nvim_lsp' },
+  --   { name = 'nvim_lua' },
+  --   { name = 'path' },
+  --   { name = 'luasnip' },
+  --   { name = 'buffer' },
+  -- }),
 
-cmp.setup({
+-- You should specify your *installed* sources.
+  sources = {
+    { name = 'buffer' },
+  },
   enabled = function()
     return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
         or require("cmp_dap").is_dap_buffer()
