@@ -95,10 +95,10 @@ local config = {
         downloadSources = true,
       },
       implementationsCodeLens = {
-        enabled = false,
+        enabled = true,
       },
       referencesCodeLens = {
-        enabled = false,
+        enabled = true,
       },
       references = {
         includeDecompiledSources = true,
