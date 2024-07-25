@@ -23,7 +23,7 @@ return {
     telescope.setup({
       -- configure custom mappings
       defaults = {
-        path_display = {"smart"},
+        -- path_display = {"smart"},
         mappings = {
           i = {
             ["<C-k>"] = actions.move_selection_previous, -- move to prev result
@@ -33,7 +33,7 @@ return {
         },
       },
       layout_config = {
-        horizontal = { width = 0.99, height = 100 },
+        -- horizontal = { width = 0.99, height = 100 },
         -- vertical = { width = 0.99 }
         -- other layout configuration here
       },
