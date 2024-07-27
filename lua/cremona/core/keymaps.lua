@@ -134,6 +134,8 @@ keymap('n', '<F12>', ':lua require("dapui").toggle()<CR>')
 -- Undotree
 keymap('n', '<S-u>', '<cmd>UndotreeToggle<CR>')
 
+keymap("n", ",tw", "<cmd>lua require('neotest').run.run({ jestCommand = 'jest --watch ' })<cr>", {})
+
 -- Remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })

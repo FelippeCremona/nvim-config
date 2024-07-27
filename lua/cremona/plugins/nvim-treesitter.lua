@@ -24,6 +24,7 @@ return {
           "json",
           "javascript",
           "typescript",
+          "java",
           "tsx",
           "yaml",
           "html",

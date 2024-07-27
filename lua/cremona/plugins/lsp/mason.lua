@@ -26,7 +26,7 @@ return {
         "html",
         -- "jdtls",
         "cssls",
-        "tailwindcss",
+        -- "tailwindcss",
         "svelte",
         "lua_ls",
         "graphql",
@@ -39,11 +39,13 @@ return {
 
     mason_null_ls.setup({
       -- list of formatters & linters for mason to install
-      -- ensure_installed = {
+      ensure_installed = {
+        'java-debug-adapter',
+        'java-test',
       --   "prettier", -- ts/js formatter
       --   "stylua", -- lua formatter
       --   "eslint_d", -- ts/js linter
-      -- },
+      },
       -- auto-install configured servers (with lspconfig)
       automatic_installation = true,
     })

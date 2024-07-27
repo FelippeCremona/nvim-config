@@ -49,7 +49,7 @@ opt.completeopt = { 'menu', 'menuone', 'noselect' }
 opt.mouse = "a"
 opt.showmode = false
 
-opt.cmdheight=0
+opt.cmdheight=1
 
 opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 opt.undofile = true
