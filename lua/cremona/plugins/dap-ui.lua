@@ -3,6 +3,7 @@ return {
   ft = "java",
   dependencies = {
     "mfussenegger/nvim-jdtls",
+    "nvim-neotest/nvim-nio"
   },
   config = function()
     local dapui = require("dapui")
