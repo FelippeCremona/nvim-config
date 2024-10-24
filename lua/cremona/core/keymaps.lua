@@ -6,7 +6,6 @@ local opts = { noremap = true, silent = true }
 local keymap = vim.keymap.set
 
 -- Insert --
--- keymap("i", "<C-c>", "<Esc>", opts)
 
 -- Normal --
 keymap("n", "tt", "zt", opts)
@@ -45,30 +44,6 @@ keymap("v", "<Right>", ">gv", opts)
 
 keymap("v", "p", '"_dP', opts)
 
--- vim.cmd [[
---   function! QuickFixToggle()
---     if empty(filter(getwininfo(), 'v:val.quickfix'))
---       copen
---     else
---       cclose
---     endif
---   endfunction
--- ]]
-
--- keymap("n", "<m-q>", ":call QuickFixToggle()<cr>", opts)
-
--- M.show_documentation = function()
---   local filetype = vim.bo.filetype
---   if vim.tbl_contains({ "vim", "help" }, filetype) then
---     vim.cmd("h " .. vim.fn.expand "<cword>")
---   elseif vim.tbl_contains({ "man" }, filetype) then
---     vim.cmd("Man " .. vim.fn.expand "<cword>")
---   elseif vim.fn.expand "%:t" == "Cargo.toml" then
---     require("crates").show_popup()
---   else
---     vim.lsp.buf.hover()
---   end
--- end
 vim.api.nvim_set_keymap("n", "K", ":lua require('user.keymaps').show_documentation()<CR>", opts)
 
 -- Nvimtree
@@ -93,11 +68,12 @@ keymap("n", ",f", "<cmd>lua require('telescope.builtin').find_files(require('tel
 keymap("n", ",g", "<cmd>Telescope live_grep<cr>", opts)
 keymap("n", ",G", "<cmd>lua require('telescope.builtin').live_grep(require('telescope.themes').get_ivy({layout_config={height=10}, previewer=false, defaults={path_display={'absolute'}}}))<cr>", opts)
 
-keymap("n", "gr", "<cmd>lua require('telescope.builtin').lsp_references()<cr>", opts)
+-- keymap("n", "gr", "<cmd>lua require('telescope.builtin').lsp_references()<cr>", opts)
 keymap("n", ",d", "<cmd>lua require('telescope.builtin').diagnostics()<cr>", opts)
 
 -- Atalho LSP
 keymap('n', ',e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+keymap('n', 'gr', '<cmd> lua vim.lsp.buf.references()<CR>')
 keymap('n','gD','<cmd>lua vim.lsp.buf.declaration()<CR>')
 keymap('n','gd','<cmd>lua vim.lsp.buf.definition()<CR>')
 keymap('n','K','<cmd>lua vim.lsp.buf.hover()<CR>')

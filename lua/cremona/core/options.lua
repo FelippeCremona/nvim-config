@@ -68,6 +68,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+
 -- opt.g:clipboard = {
 --                            'name': 'win32yank-wsl',
 --                            'copy': {

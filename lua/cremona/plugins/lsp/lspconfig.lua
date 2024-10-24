@@ -2,7 +2,7 @@ return {
   "neovim/nvim-lspconfig",
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
-    "jose-elias-alvarez/typescript.nvim",
+    -- "jose-elias-alvarez/typescript.nvim",
     "hrsh7th/cmp-nvim-lsp",
     {
       "smjonas/inc-rename.nvim",
@@ -17,7 +17,7 @@ return {
     local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
     -- import typescript plugin
-    local typescript = require("typescript")
+    -- local typescript = require("typescript")
 
     local keymap = vim.keymap -- for conciseness
 
@@ -67,7 +67,7 @@ return {
       keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
 
       -- typescript specific keymaps (e.g. rename file and update imports)
-      if client.name == "tsserver" then
+      if client.name == "ts_ls" then
         opts.desc = "Rename file and update file imports"
         keymap.set("n", "<leader>rf", ":TypescriptRenameFile<CR>") -- rename file and update imports
 
@@ -97,12 +97,12 @@ return {
     })
 
     -- configure typescript server with plugin
-    typescript.setup({
-      server = {
-        capabilities = capabilities,
-        on_attach = on_attach,
-      },
-    })
+    -- typescript.setup({
+    --   server = {
+    --     capabilities = capabilities,
+    --     on_attach = on_attach,
+    --   },
+    -- })
 
     -- configure css server
     lspconfig["cssls"].setup({
