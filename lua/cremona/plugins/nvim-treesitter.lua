@@ -16,7 +16,7 @@ return {
           enable = true,
         },
         -- enable indentation
-        indent = { enable = true },
+        indent = { enable = false },
         -- enable autotagging (w/ nvim-ts-autotag plugin)
         autotag = { enable = true },
         -- ensure these language parsers are installed
@@ -42,12 +42,12 @@ return {
           "gitignore",
         },
         -- enable nvim-ts-context-commentstring plugin for commenting tsx and jsx
-        auto_install = true,
+        -- auto_install = true,
       })
     end,
 
-    require('ts_context_commentstring').setup {
-      enable_autocmd = false,
-    }
+    -- require('ts_context_commentstring').setup {
+    --   enable_autocmd = false,
+    -- }
   },
 }
