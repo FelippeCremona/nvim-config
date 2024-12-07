@@ -56,28 +56,3 @@ opt.undofile = true
 
 opt.hlsearch = false
 opt.incsearch = true
-
--- Highlight when yanking (copying) text
---  Try it with `yap` in normal mode
---  See `:help vim.highlight.on_yank()`
-vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
-  callback = function()
-    vim.highlight.on_yank()
-  end,
-})
-
-
--- opt.g:clipboard = {
---                            'name': 'win32yank-wsl',
---                            'copy': {
---                               '+': 'win32yank.exe -i --crlf',
---                               '*': 'win32yank.exe -i --crlf',
---                             },
---                            'paste': {
---                               '+': 'win32yank.exe -o --lf',
---                               '*': 'win32yank.exe -o --lf',
---                            },
---                            'cache_enabled': 0,
---                          }
