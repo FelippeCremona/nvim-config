@@ -123,4 +123,8 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
 -- Incrementa e Decrementa numero
 keymap("n", "<A-Up>", "<C-a>", opts)
 keymap("n", "<A-Down>", "<C-x>", opts)
+
+keymap('n', '<C-A-t>', '<cmd>lua require("utils").run_java_test_method()<CR>', opts)
+keymap('n', '<C-A-p>', '<cmd>lua require("utils").run_java_test_class()<CR>', opts)
+
 return M
