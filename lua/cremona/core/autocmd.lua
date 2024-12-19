@@ -18,11 +18,21 @@ vim.api.nvim_create_autocmd("WinLeave", {
   end,
 })
 
--- Destaca variavel sob o cursor
-vim.cmd [[
-  augroup lsp_document_highlight
-    autocmd!
-    autocmd CursorHold,CursorHoldI * lua vim.lsp.buf.document_highlight()
-    autocmd CursorMoved,CursorMovedI * lua vim.lsp.buf.clear_references()
-  augroup END
-]]
+-- Destaque a variável sob o cursor após o LSP iniciar
+vim.api.nvim_create_autocmd('LspAttach', {
+  callback = function(args)
+    local bufnr = args.buf
+    vim.api.nvim_create_autocmd({'CursorHold', 'CursorHoldI'}, {
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.document_highlight()
+      end,
+    })
+    vim.api.nvim_create_autocmd({'CursorMoved', 'CursorMovedI'}, {
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.clear_references()
+      end,
+    })
+  end,
+})
