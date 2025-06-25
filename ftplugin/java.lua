@@ -31,15 +31,25 @@ vim.list_extend(
 
 
 local dap = require('dap')
+
+-- Exemplo de configuração para depuração em Java
+dap.adapters.java = {
+  type = 'server',
+  host = '127.0.0.1',
+  port = 5005, -- Certifique-se de que este é o porto correto.
+}
+
 dap.configurations.java = {
   {
-    type = 'java';
-    request = 'attach';
-    name = "Debug (Attach) - Remote";
-    hostName = "127.0.0.1";
-    port = 5005;
+    type = 'java',
+    request = 'attach',
+    name = 'Depuração Java',
+    hostName = '127.0.0.1',
+    port = 5005,
   },
 }
+
+require('dap').set_log_level('DEBUG')
 
 -- Main Config
 local config = {
@@ -156,10 +166,10 @@ local config = {
   },
 }
 
-config['on_attach'] = function()
-  require("jdtls.dap").setup_dap_main_class_configs()
-  require("jdtls").setup_dap({ hotcodereplace = "auto" })
-end
+-- config['on_attach'] = function()
+--   require("jdtls.dap").setup_dap_main_class_configs()
+--   require("jdtls").setup_dap({ hotcodereplace = "auto" })
+-- end
 
 -- vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 --   pattern = { "*.java" },
