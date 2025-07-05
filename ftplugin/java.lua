@@ -21,10 +21,12 @@ local bundles = {}
 local mason_path = vim.fn.glob(vim.fn.stdpath("data") .. "/mason/")
 vim.list_extend(bundles, vim.split(vim.fn.glob(mason_path .. "packages/java-test/extension/server/*.jar"), "\n"))
 -- vim.list_extend(bundles, vim.split(vim.fn.glob(vim.env.HOME .. "/.local/share/nvim/mason/share/java-test/*.jar", 1), "\n"))
+
 vim.list_extend(
   bundles,
   vim.split(
     vim.fn.glob(mason_path .. "packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar"),
+    -- vim.fn.glob("/home/cremona/.local/share/nvim/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*"),
     "\n"
   )
 )
@@ -165,6 +167,13 @@ local config = {
     bundles = bundles,
   },
 }
+
+config['init_options'] = {
+  bundles = {
+    -- vim.fn.glob("/home/cremona/.local/share/nvim/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*", 1)
+  };
+}
+
 
 -- config['on_attach'] = function()
 --   require("jdtls.dap").setup_dap_main_class_configs()
