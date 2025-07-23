@@ -11,15 +11,6 @@ local keymap = vim.keymap.set
 keymap("n", "tt", "zt", opts)
 
 
--- copia a linha inteira sem pular de linha
-keymap("n", "<C-c>", "_v$y", opts)
-
-keymap("n", ",at", "vat=<C-o>", opts)
-keymap("n", ",af", "va{=<C-o>", opts)
-
-keymap("n", "<Space>df", "Vf{%d", opts)
-keymap("n", "<Space>yf", "Vf{%y", opts)
-
 -- Better window navigation
 keymap("n", "<m-h>", "<C-w>h", opts)
 keymap("n", "<m-j>", "<C-w>j", opts)
@@ -44,8 +35,6 @@ keymap("v", "<Right>", ">gv", opts)
 
 keymap("v", "p", '"_dP', opts)
 
-vim.api.nvim_set_keymap("n", "K", ":lua require('user.keymaps').show_documentation()<CR>", opts)
-
 -- Nvimtree
 keymap("n", "<space>e", "<cmd>NvimTreeToggle<cr>", opts)
 
@@ -68,7 +57,6 @@ keymap("n", ",f", "<cmd>lua require('telescope.builtin').find_files(require('tel
 keymap("n", ",g", "<cmd>Telescope live_grep<cr>", opts)
 keymap("n", ",G", "<cmd>lua require('telescope.builtin').live_grep(require('telescope.themes').get_ivy({layout_config={height=10}, previewer=false, defaults={path_display={'absolute'}}}))<cr>", opts)
 
--- keymap("n", "gr", "<cmd>lua require('telescope.builtin').lsp_references()<cr>", opts)
 keymap("n", ",d", "<cmd>lua require('telescope.builtin').diagnostics()<cr>", opts)
 
 -- Atalho LSP
@@ -82,18 +70,17 @@ keymap('n','gi','<cmd>lua vim.lsp.buf.implementation()<CR>')
 keymap('n','gt','<cmd>lua vim.lsp.buf.type_definition()<CR>')
 keymap('n','<space>gw','<cmd>lua vim.lsp.buf.document_symbol()<CR>')
 keymap('n','<space>gW','<cmd>lua vim.lsp.buf.workspace_symbol()<CR>')
-keymap('n','<space>ah','<cmd>lua vim.lsp.buf.hover()<CR>')
-keymap('n','<space>af','<cmd>lua vim.lsp.buf.code_action()<CR>')
-keymap('n','<C-S-r>','<cmd>lua vim.lsp.buf.rename()<CR>')
-keymap('n','<space>=', '<cmd>lua vim.lsp.buf.formatting()<CR>')
+keymap('n',',af','<cmd>lua vim.lsp.buf.code_action()<CR>')
+keymap('n','<C-A-r>','<cmd>lua vim.lsp.buf.rename()<CR>')
 keymap('n','<space>ai','<cmd>lua vim.lsp.buf.incoming_calls()<CR>')
 keymap('n','<space>ao','<cmd>lua vim.lsp.buf.outgoing_calls()<CR>')
 
 keymap("n", "<C-A-o>", "<Cmd>lua require'jdtls'.organize_imports()<CR>", opts)
-keymap("n", "<C-A-n>", "<cmd>lua vim.diagnostic.goto_next({buffer=0})<CR> <cmd>CodeActionMenu<CR> ", opts)
+-- keymap("n", "<C-A-n>", "<cmd>lua vim.diagnostic.goto_next({buffer=0})<CR> <cmd>CodeActionMenu<CR> ", opts)
+keymap("n", "<C-A-n>", "<cmd>lua vim.diagnostic.goto_next({buffer=0})<CR> <cmd>lua vim.lsp.buf.code_action()<CR> ", opts)
 
 -- Atalhos JDTLS
-keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+-- keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
 
 -- Atalhos DAP
 keymap('n', '<space>dt', ':lua require("dap").toggle_breakpoint()<CR>')
@@ -110,15 +97,9 @@ keymap('n', '<F12>', ':lua require("dapui").toggle()<CR>')
 -- Undotree
 keymap('n', '<S-u>', '<cmd>UndotreeToggle<CR>')
 
--- Remap for dealing with word wrap
-vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
-
 -- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
+keymap('n', '[d', vim.diagnostic.goto_prev)
+keymap('n', ']d', vim.diagnostic.goto_next)
 
 -- Incrementa e Decrementa numero
 keymap("n", "<A-Up>", "<C-a>", opts)
