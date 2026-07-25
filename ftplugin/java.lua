@@ -222,7 +222,12 @@ end
 -- Sem isso o cliente nunca pede os CodeLens ao servidor (Run Test/Debug
 -- Test, implementations, references ficam invisíveis mesmo com o bundle
 -- do java-test funcionando).
-vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "CursorHold", "BufWritePost" }, {
+--
+-- Sem "CursorHold" de propósito: com updatetime=40 (lua/cremona/core/options.lua),
+-- esse evento dispara a cada pausa mínima do cursor, e cada refresh de
+-- referencesCodeLens busca referências no workspace inteiro por método
+-- visível — isso sobrecarregava o jdtls e deixava até gd/gi lentos.
+vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "BufWritePost" }, {
   buffer = 0,
   callback = function()
     pcall(vim.lsp.codelens.refresh, { bufnr = 0 })
