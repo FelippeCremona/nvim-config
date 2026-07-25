@@ -22,10 +22,23 @@ vim.api.nvim_create_autocmd("WinLeave", {
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(args)
     local bufnr = args.buf
+
+    -- LspAttach dispara uma vez por cliente que anexa ao buffer (ex: html +
+    -- outro servidor no mesmo arquivo); sem essa guarda, os autocmds abaixo
+    -- ficavam duplicados a cada cliente novo.
+    if vim.b[bufnr].cursor_highlight_autocmds_set then
+      return
+    end
+    vim.b[bufnr].cursor_highlight_autocmds_set = true
+
     vim.api.nvim_create_autocmd({'CursorHold', 'CursorHoldI'}, {
       buffer = bufnr,
       callback = function()
-        vim.lsp.buf.document_highlight()
+        -- Nem todo servidor suporta documentHighlight (ex: o do html) —
+        -- chamar sem checar isso dá erro no CursorHold.
+        if #vim.lsp.get_clients({ bufnr = bufnr, method = 'textDocument/documentHighlight' }) > 0 then
+          vim.lsp.buf.document_highlight()
+        end
       end,
     })
     vim.api.nvim_create_autocmd({'CursorMoved', 'CursorMovedI'}, {

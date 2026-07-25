@@ -63,7 +63,69 @@ keymap("n", ",d", "<cmd>lua require('telescope.builtin').diagnostics()<cr>", opt
 keymap('n', ',e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
 keymap('n', 'gr', '<cmd> lua vim.lsp.buf.references()<CR>')
 keymap('n','gD','<cmd>lua vim.lsp.buf.declaration()<CR>')
-keymap('n','gd','<cmd>lua vim.lsp.buf.definition()<CR>')
+-- gd "esperto": tenta a definição normal do LSP (mesma lógica de agregação
+-- multi-cliente que o vim.lsp.buf.definition() nativo usa: buf_request_all,
+-- que só decide depois que TODOS os clientes responderem — a versão anterior
+-- usava buf_request simples, que reagia ao primeiro cliente a responder e
+-- quebrava a navegação normal quando havia mais de um cliente no buffer).
+-- Se nada for encontrado: em .js cai pro ,gd (goto_service_method), em .html
+-- cai pro ,gc (goto_html_controller_member).
+local function smart_goto_definition_fallback()
+  local ft = vim.bo.filetype
+  if ft == "javascript" or ft == "javascriptreact" then
+    require("cremona.angularjs_goto").goto_service_method()
+  elseif ft == "html" then
+    require("cremona.angularjs_goto").goto_html_controller_member()
+  else
+    vim.notify("Definição não encontrada", vim.log.levels.WARN)
+  end
+end
+
+local function smart_goto_definition()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local win = vim.api.nvim_get_current_win()
+  local method = "textDocument/definition"
+
+  local clients = vim.lsp.get_clients({ bufnr = bufnr, method = method })
+  if vim.tbl_isempty(clients) then
+    smart_goto_definition_fallback()
+    return
+  end
+
+  vim.lsp.buf_request_all(bufnr, method, function(client)
+    return vim.lsp.util.make_position_params(win, client.offset_encoding)
+  end, function(results)
+    local all_items = {}
+    for client_id, res in pairs(results) do
+      local client = vim.lsp.get_client_by_id(client_id)
+      if client and res and res.result then
+        local locations = vim.islist(res.result) and res.result or { res.result }
+        local items = vim.lsp.util.locations_to_items(locations, client.offset_encoding)
+        vim.list_extend(all_items, items)
+      end
+    end
+
+    if vim.tbl_isempty(all_items) then
+      smart_goto_definition_fallback()
+      return
+    end
+
+    if #all_items == 1 then
+      local item = all_items[1]
+      local b = item.bufnr or vim.fn.bufadd(item.filename)
+      vim.cmd("normal! m'")
+      vim.bo[b].buflisted = true
+      vim.api.nvim_win_set_buf(win, b)
+      vim.api.nvim_win_set_cursor(win, { item.lnum, item.col - 1 })
+      vim.cmd("normal! zvzz")
+    else
+      vim.fn.setqflist({}, ' ', { title = 'LSP locations', items = all_items })
+      vim.cmd('botright copen')
+    end
+  end)
+end
+
+keymap("n", "gd", smart_goto_definition, opts)
 keymap('n','K','<cmd>lua vim.lsp.buf.hover()<CR>')
 keymap('n','gs','<cmd>lua vim.lsp.buf.signature_help()<CR>')
 keymap('n','gi','<cmd>lua vim.lsp.buf.implementation()<CR>')
@@ -78,6 +140,7 @@ keymap('n','<space>ao','<cmd>lua vim.lsp.buf.outgoing_calls()<CR>')
 keymap("n", "<C-A-o>", "<Cmd>lua require'jdtls'.organize_imports()<CR>", opts)
 -- keymap("n", "<C-A-n>", "<cmd>lua vim.diagnostic.goto_next({buffer=0})<CR> <cmd>CodeActionMenu<CR> ", opts)
 keymap("n", "<C-A-n>", "<cmd>lua vim.diagnostic.goto_next({buffer=0})<CR> <cmd>lua vim.lsp.buf.code_action()<CR> ", opts)
+keymap("n", "<C-A-N>", "<cmd>lua vim.diagnostic.goto_next({severity = vim.diagnostic.severity.ERROR, buffer=0})<CR> <cmd>lua vim.lsp.buf.code_action()<CR> ", opts)
 
 -- Atalhos JDTLS
 -- keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
@@ -91,7 +154,7 @@ keymap('n', '<F4>', ':lua require"dap.ui.widgets".centered_float(require"dap.ui.
 keymap('n', '<F8>', ':lua require"dap".continue()<CR>')
 keymap('n', '<F10>', ':lua require"dap".step_over()<CR>')
 keymap('n', '<F11>', ':lua require"dap".step_into()<CR>')
-keymap('n', '<S-11>', ':lua require"dap".step_out()<CR>')
+keymap('n', '<S-F11>', ':lua require"dap".step_out()<CR>')
 keymap('n', '<F12>', ':lua require("dapui").toggle()<CR>')
 
 -- Undotree

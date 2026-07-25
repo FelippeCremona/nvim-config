@@ -10,13 +10,11 @@ return {
   },
   config = function()
     -- import lspconfig plugin
-    local lspconfig = require("lspconfig")
 
     -- import cmp-nvim-lsp plugin
     local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
     -- used to enable autocompletion (assign to every lsp server config)
-    local capabilities = cmp_nvim_lsp.default_capabilities()
 
     -- Change the Diagnostic symbols in the sign column (gutter)
     -- (not in youtube nvim video)
@@ -27,68 +25,92 @@ return {
     end
 
     -- configure html server
-    lspconfig["html"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
+    -- lspconfig["html"].setup({
+    --   capabilities = capabilities,
+    --   on_attach = on_attach,
+    -- })
 
-    -- configure ts_ls server
-    lspconfig["ts_ls"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
+    vim.lsp.enable("html")
+    vim.lsp.enable("cssls")
+    vim.lsp.enable("svelte")
+    vim.lsp.enable("prismals")
+    vim.lsp.enable("graphql")
+    vim.lsp.enable("emmet_ls")
 
-    -- configure css server
-    lspconfig["cssls"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
 
-    -- configure svelte server
-    lspconfig["svelte"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
-
-    -- configure prisma orm server
-    lspconfig["prismals"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
-
-    -- configure graphql language server
-    lspconfig["graphql"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-      filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
-    })
-
-    -- configure emmet language server
-    lspconfig["emmet_ls"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-      filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
-    })
-
-    -- configure lua server (with special settings)
-    lspconfig["lua_ls"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = { -- custom settings for lua
+    vim.lsp.config("lua_ls", {
+      settings = {
         Lua = {
-          -- make the language server recognize "vim" global
+          runtime = {
+            version = "LuaJIT",
+          },
+
           diagnostics = {
             globals = { "vim" },
           },
+
           workspace = {
-            -- make language server aware of runtime files
+            checkThirdParty = false,
+
             library = {
-              [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-              [vim.fn.stdpath("config") .. "/lua"] = true,
+              vim.env.VIMRUNTIME,
+              vim.fn.stdpath("config"),
             },
+          },
+
+          telemetry = {
+            enable = false,
           },
         },
       },
     })
+
+    vim.lsp.enable("lua_ls")
+
+
+
+    -- O typescript-language-server tem shebang "#!/usr/bin/env node", então
+    -- normalmente roda com o node ativo no momento via `n` — quebra quando
+    -- o projeto exige `n use 14` (Node 14 é velho demais pro ts_ls atual).
+    -- Aqui ele roda explicitamente com uma versão fixa e mais nova do node
+    -- (instalada via `n`), independente da versão ativa pro projeto.
+    vim.lsp.config("ts_ls", {
+      cmd = {
+        "/usr/local/n/versions/node/20.20.2/bin/node",
+        "/usr/local/bin/typescript-language-server",
+        "--stdio",
+      },
+
+      filetypes = {
+        "typescript",
+        "typescriptreact",
+        "javascript",
+        "javascriptreact",
+      },
+
+      root_markers = {
+        "package.json",
+        "tsconfig.json",
+        "jsconfig.json",
+        ".git",
+      },
+
+      init_options = {
+        tsserver = {
+          globalTsdk = "/usr/local/lib/node_modules/typescript/lib",
+        },
+      },
+
+      settings = {
+        typescript = {
+          inlayHints = {
+            includeInlayParameterNameHints = "all",
+          },
+        },
+      },
+    })
+
+    vim.lsp.enable("ts_ls")
+
   end,
 }

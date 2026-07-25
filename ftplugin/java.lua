@@ -1,10 +1,17 @@
 -- See `:help vim.lsp.start_client` for an overview of the supported `config` options.
 
-local jdtls_path = "/home/cremona/trabalho/programas/jdtls"
-local path_to_lsp_server = jdtls_path .. "/config_linux"
-local path_to_plugins = jdtls_path .. "/plugins/"
-local path_to_jar = path_to_plugins .. "org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar"
-local lombok_path = jdtls_path .. "/lombok.jar"
+require("cremona.java_test_runner").setup()
+
+local home = os.getenv("HOME")
+local mason_path = vim.fn.stdpath("data") .. "/mason/"
+
+-- jdtls instalado via mason (:MasonInstall jdtls). O wrapper "jdtls" resolve
+-- sozinho o launcher/config por SO; só precisamos apontar -data e o agente
+-- do lombok. O jdt.ls moderno exige Java 21 pra rodar o próprio servidor
+-- (independente da versão do projeto), por isso o JAVA_HOME abaixo.
+local jdtls_bin = mason_path .. "packages/jdtls/jdtls"
+local lombok_path = mason_path .. "packages/jdtls/lombok.jar"
+local jdtls_java_home = home .. "/.sdkman/candidates/java/21.0.2-open"
 
 local root_markers = { ".git" }
 local root_dir = require("jdtls.setup").find_root(root_markers)
@@ -14,13 +21,29 @@ end
 
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
 
-WORKSPACE_PATH = os.getenv("HOME") .. "/trabalho/workspace/"
+WORKSPACE_PATH = home .. "/trabalho/workspace/"
 local workspace_dir = WORKSPACE_PATH .. project_name
 
 local bundles = {}
-local mason_path = vim.fn.glob(vim.fn.stdpath("data") .. "/mason/")
-vim.list_extend(bundles, vim.split(vim.fn.glob(mason_path .. "packages/java-test/extension/server/*.jar"), "\n"))
--- vim.list_extend(bundles, vim.split(vim.fn.glob(vim.env.HOME .. "/.local/share/nvim/mason/share/java-test/*.jar", 1), "\n"))
+
+-- IMPORTANTE: java-test precisa ficar fixado em 0.39.0
+-- (:MasonInstall java-test@0.39.0). Versões mais novas (0.43.1+) exigem
+-- org.objectweb.asm na faixa [9.9.0,9.10.0), mas o jdtls (v1.60.0+) só traz
+-- 9.10.1 embutido — fora da faixa — e isso quebra a ativação do bundle
+-- (Run Test/Debug Test somem). A 0.39.0 não depende de asm, então funciona
+-- limpo com o jdtls atual. Rodar ":MasonUpdate" sem essa ressalva volta pra
+-- versão nova e quebra de novo; se acontecer, reinstale a 0.39.0.
+--
+-- jacocoagent.jar e o *-jar-with-dependencies.jar não são bundles OSGi
+-- válidos (não têm MANIFEST.MF de plugin). Incluí-los na lista faz o
+-- carregamento do lote inteiro de bundles falhar no jdtls (CoreException:
+-- Load bundle list), o que impede até os bundles válidos (como o do
+-- java-debug-adapter) de serem ativados.
+local java_test_jars = vim.split(vim.fn.glob(mason_path .. "packages/java-test/extension/server/*.jar"), "\n")
+java_test_jars = vim.tbl_filter(function(jar)
+  return not jar:match("jacocoagent%.jar$") and not jar:match("%-jar%-with%-dependencies%.jar$")
+end, java_test_jars)
+vim.list_extend(bundles, java_test_jars)
 
 vim.list_extend(
   bundles,
@@ -32,47 +55,21 @@ vim.list_extend(
 )
 
 
-local dap = require('dap')
-
--- Exemplo de configuração para depuração em Java
-dap.adapters.java = {
-  type = 'server',
-  host = '127.0.0.1',
-  port = 5005, -- Certifique-se de que este é o porto correto.
-}
-
-dap.configurations.java = {
-  {
-    type = 'java',
-    request = 'attach',
-    name = 'Depuração Java',
-    hostName = '127.0.0.1',
-    port = 5005,
-  },
-}
-
 require('dap').set_log_level('DEBUG')
 
 -- Main Config
 local config = {
   -- The command that starts the language server
-  -- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
   cmd = {
-    'java',
-    '-Declipse.application=org.eclipse.jdt.ls.core.id1',
-    '-Dosgi.bundles.defaultStartLevel=4',
-    '-Declipse.product=org.eclipse.jdt.ls.core.product',
-    '-Dlog.protocol=true',
-    '-Dlog.level=ALL',
-    '-javaagent:' .. lombok_path,
-    '-Xms1g',
-    '--add-modules=ALL-SYSTEM',
-    '--add-opens', 'java.base/java.util=ALL-UNNAMED',
-    '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
-
-    '-jar', path_to_jar,
-    '-configuration', path_to_lsp_server,
+    jdtls_bin,
+    '--jvm-arg=-javaagent:' .. lombok_path,
     '-data', workspace_dir,
+  },
+
+  -- JVM que roda o próprio jdt.ls (não é a JDK do projeto, essa vem de
+  -- settings.java.configuration.runtimes abaixo).
+  cmd_env = {
+    JAVA_HOME = jdtls_java_home,
   },
 
   -- This is the default if not provided, you can remove it. Or adjust as needed.
@@ -102,6 +99,10 @@ local config = {
           {
             name = "JavaSE-11",
             path = "~/.sdkman/candidates/java/11.0.2-open",
+          },
+          {
+            name = "JavaSE-1.8",
+            path = home .. "/trabalho/programas/java/jdk1.8.0_351",
           }
         }
       },
@@ -163,29 +164,70 @@ local config = {
     allow_incremental_sync = true,
   },
   init_options = {
-    -- bundles = {},
     bundles = bundles,
   },
 }
 
-config['init_options'] = {
-  bundles = {
-    -- vim.fn.glob("/home/cremona/.local/share/nvim/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*", 1)
-  };
-}
+config['on_attach'] = function(client, _)
+  -- on_attach dispara mais de uma vez pro mesmo cliente jdtls (uma vez por
+  -- buffer que anexa, às vezes mais de uma vez pro mesmo buffer). Sem essa
+  -- guarda, cada disparo repete o scan de classes main() do projeto inteiro
+  -- (causando a enxurrada de "Could not resolve classpath...") e duplica a
+  -- entrada "Attach ao JBoss". Guardamos numa flag no próprio cliente, que é
+  -- reaproveitado entre arquivos do mesmo projeto, pra rodar isso só uma vez.
+  if client.jdtls_dap_configured then
+    return
+  end
+  client.jdtls_dap_configured = true
 
+  require("jdtls").setup_dap({ hotcodereplace = "auto" })
 
--- config['on_attach'] = function()
---   require("jdtls.dap").setup_dap_main_class_configs()
---   require("jdtls").setup_dap({ hotcodereplace = "auto" })
--- end
+  -- Anexa numa JVM já rodando (ex: JBoss iniciado com o agente JDWP
+  -- escutando na porta 5005), usando o adaptador dinâmico do jdtls em vez
+  -- de um adaptador cru fixo.
+  local dap = require('dap')
+  dap.configurations.java = dap.configurations.java or {}
+  table.insert(dap.configurations.java, {
+    type = 'java',
+    request = 'attach',
+    name = 'Attach ao JBoss (porta 5005)',
+    hostName = '127.0.0.1',
+    port = 5005,
+  })
 
--- vim.api.nvim_create_autocmd({ "BufWritePost" }, {
---   pattern = { "*.java" },
---   callback = function()
---     local _, _ = pcall(vim.lsp.codelens.refresh)
---   end,
--- })
+  -- Anexa na JVM de teste que o ,tD (java_test_runner.lua) sobe pausada
+  -- (surefire com suspend=y) esperando o debugger nessa porta.
+  local test_debug_port = require("cremona.java_test_runner").TEST_DEBUG_PORT
+  table.insert(dap.configurations.java, {
+    type = 'java',
+    request = 'attach',
+    name = string.format('Debug teste (porta %d)', test_debug_port),
+    hostName = '127.0.0.1',
+    port = test_debug_port,
+  })
+
+  require("jdtls.dap").setup_dap_main_class_configs()
+
+  -- Não dá pra usar require("jdtls.dap").test_nearest_method()/test_class()
+  -- (o run/debug de teste nativo do jdtls) agora: nenhuma versão publicada
+  -- do java-test é compatível com esse jdt.ls. A 0.43.1 falha ao ativar o
+  -- bundle (exige org.objectweb.asm em [9.9.0,9.10.0), o jdtls só traz
+  -- 9.10.1). A 0.39.0 (fixada acima) ativa, mas o comando de busca de teste
+  -- quebra em runtime (referencia uma classe interna do jdt.ls que não
+  -- existe mais: org.eclipse.jdt.ls.core.internal.hover.JavaElementLabels).
+  -- Pra rodar/debugar teste, usar ,tm/,tc/,tt (mvn via tmux) e o "Attach ao
+  -- JBoss" acima.
+end
+
+-- Sem isso o cliente nunca pede os CodeLens ao servidor (Run Test/Debug
+-- Test, implementations, references ficam invisíveis mesmo com o bundle
+-- do java-test funcionando).
+vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "CursorHold", "BufWritePost" }, {
+  buffer = 0,
+  callback = function()
+    pcall(vim.lsp.codelens.refresh, { bufnr = 0 })
+  end,
+})
 
 -- This starts a new client & server,
 -- or attaches to an existing client & server depending on the `root_dir`.
