@@ -263,8 +263,8 @@ endfunction
 let s:db2 = {
       \ 'callable': 'introspect',
       \ 'requires_stdin': v:true,
-      \ 'schemes_query': "select distinct creator as schema_name from sysibm.systables where type = 'T' order by creator;\n",
-      \ 'schemes_tables_query': "select creator as table_schema, name as table_name from sysibm.systables where type = 'T' order by creator, name;\n",
+      \ 'schemes_query': "select distinct creator as schema_name from sysibm.systables where type in ('T', 'V') order by creator;\n",
+      \ 'schemes_tables_query': "select creator as table_schema, name as table_name from sysibm.systables where type in ('T', 'V') order by creator, name;\n",
       \ 'default_scheme': '',
       \ 'quote': 1,
       \ 'parse_results': function('s:db2_parse_results'),
