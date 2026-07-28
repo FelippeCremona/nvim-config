@@ -39,6 +39,7 @@ function! db#adapter#db2#interactive(url) abort
         \ 'sqlline.SqlLine',
         \ '-d', 'com.ibm.db2.jcc.DB2Driver',
         \ '-u', s:jdbc_url(a:url),
+        \ '--fastConnect=true',
         \ ]
   if has_key(url, 'user')
     let cmd += ['-n', url.user]

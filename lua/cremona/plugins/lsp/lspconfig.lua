@@ -36,6 +36,7 @@ return {
     vim.lsp.enable("prismals")
     vim.lsp.enable("graphql")
     vim.lsp.enable("emmet_ls")
+    vim.lsp.enable("pyright")
 
 
     vim.lsp.config("lua_ls", {
