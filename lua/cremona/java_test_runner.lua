@@ -47,6 +47,29 @@ function M.current_class()
     return find_named_ancestor("class_declaration")
 end
 
+-- Convenção desse projeto: classe de teste termina em "Test"/"Tests" (ex:
+-- RN052Test). Sem essa checagem, rodar ,tm/,tD/,tc com o cursor na classe de
+-- produção (ex: RN052.java) monta um -Dtest=RN052 que não bate com nenhuma
+-- classe, e o Surefire (2.12.3, nesse projeto) às vezes só ignora
+-- silenciosamente em vez de avisar "No tests to run".
+local function looks_like_test_class(class)
+    return class:match("Tests?$") ~= nil
+end
+
+local function warn_if_not_test_class(class)
+    if looks_like_test_class(class) then
+        return true
+    end
+    vim.notify(
+        string.format(
+            '"%s" não parece uma classe de teste (sem sufixo "Test"/"Tests") — o cursor está no arquivo certo?',
+            class
+        ),
+        vim.log.levels.WARN
+    )
+    return false
+end
+
 -- Nome do pacote do arquivo atual (a partir do "package ...;" do topo do
 -- arquivo), usado pra montar o nome totalmente qualificado da classe e achar
 -- o relatório do surefire (target/surefire-reports/TEST-<fqcn>.xml).
@@ -80,7 +103,7 @@ end
 -- externo (root_dir), até o limite da raiz do repositório git. Rodar o mvn
 -- direto do pom.xml do módulo falha em projetos multi-módulo, pois ele não
 -- consegue resolver dependências/propriedades que só existem no reactor.
-local function find_maven_dirs(start_dir)
+function M.find_maven_dirs(start_dir)
     local module_dir, root_dir
     local dir = start_dir
 
@@ -157,7 +180,11 @@ function M.run_current_method_test()
         return
     end
 
-    local module_dir, root_dir = find_maven_dirs(vim.fn.expand("%:p:h"))
+    if not warn_if_not_test_class(class) then
+        return
+    end
+
+    local module_dir, root_dir = M.find_maven_dirs(vim.fn.expand("%:p:h"))
     if not module_dir then
         vim.notify("pom.xml não encontrado a partir do arquivo atual", vim.log.levels.ERROR)
         return
@@ -237,7 +264,11 @@ function M.run_current_method_debug()
         return
     end
 
-    local module_dir, root_dir = find_maven_dirs(vim.fn.expand("%:p:h"))
+    if not warn_if_not_test_class(class) then
+        return
+    end
+
+    local module_dir, root_dir = M.find_maven_dirs(vim.fn.expand("%:p:h"))
     if not module_dir then
         vim.notify("pom.xml não encontrado a partir do arquivo atual", vim.log.levels.ERROR)
         return
@@ -289,10 +320,14 @@ function M.run_current_class_test()
         return
     end
 
+    if not warn_if_not_test_class(class) then
+        return
+    end
+
     local package_name = current_package()
     local fqcn = package_name and string.format("%s.%s", package_name, class) or class
 
-    local module_dir, root_dir = find_maven_dirs(vim.fn.expand("%:p:h"))
+    local module_dir, root_dir = M.find_maven_dirs(vim.fn.expand("%:p:h"))
     if not module_dir then
         vim.notify("pom.xml não encontrado a partir do arquivo atual", vim.log.levels.ERROR)
         return
@@ -380,7 +415,7 @@ function M.run_project_test()
         return
     end
 
-    local _, root_dir = find_maven_dirs(vim.fn.expand("%:p:h"))
+    local _, root_dir = M.find_maven_dirs(vim.fn.expand("%:p:h"))
     if not root_dir then
         vim.notify("pom.xml não encontrado a partir do arquivo atual", vim.log.levels.ERROR)
         return
