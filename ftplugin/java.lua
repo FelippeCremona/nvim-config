@@ -182,6 +182,33 @@ config['on_attach'] = function(client, _)
 
   require("jdtls").setup_dap({ hotcodereplace = "auto" })
 
+  -- Sem "projectName", o java-debug-adapter não consegue avaliar expressões
+  -- (variável/watch/REPL) num workspace multi-módulo: dá
+  -- "Cannot evaluate ... please specify projectName in launch.json" — ele
+  -- precisa saber contra qual módulo (projeto Eclipse importado pelo jdtls)
+  -- compilar a expressão. Resolve pelo caminho do buffer ATUAL no momento em
+  -- que a sessão de debug é iniciada (nvim-dap aceita função em qualquer
+  -- campo da config e resolve na hora do launch — não é reavaliado depois,
+  -- por isso "atual" aqui significa "onde você estava ao dar start no debug").
+  -- Nomes dos projetos Eclipse conferidos em
+  -- ~/trabalho/workspace/naf-web/.metadata/.../.projects/.
+  local function resolve_project_name()
+    local path = vim.api.nvim_buf_get_name(0)
+    local module_to_project = {
+      ['/ejb/'] = 'sinaf-ejb',
+      ['/web/'] = 'sinaf3-web',
+      ['/batch/'] = 'sinaf-batch',
+      ['/assinador/'] = 'sinaf-assinador',
+      ['/ear/'] = 'sinaf-ear',
+    }
+    for module_dir, project_name in pairs(module_to_project) do
+      if path:find(module_dir, 1, true) then
+        return project_name
+      end
+    end
+    return 'sinaf-ejb'
+  end
+
   -- Anexa numa JVM já rodando (ex: JBoss iniciado com o agente JDWP
   -- escutando na porta 5005), usando o adaptador dinâmico do jdtls em vez
   -- de um adaptador cru fixo.
@@ -193,6 +220,7 @@ config['on_attach'] = function(client, _)
     name = 'Attach ao JBoss (porta 5005)',
     hostName = '127.0.0.1',
     port = 5005,
+    projectName = resolve_project_name,
   })
 
   -- Anexa na JVM de teste que o ,tD (java_test_runner.lua) sobe pausada
@@ -204,6 +232,7 @@ config['on_attach'] = function(client, _)
     name = string.format('Debug teste (porta %d)', test_debug_port),
     hostName = '127.0.0.1',
     port = test_debug_port,
+    projectName = resolve_project_name,
   })
 
   require("jdtls.dap").setup_dap_main_class_configs()

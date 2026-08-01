@@ -3,9 +3,7 @@ return {
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
     "williamboman/mason-lspconfig.nvim",
-    -- "jayp0521/mason-null-ls.nvim",
     "neovim/nvim-lspconfig"
-    -- {'j-hui/fidget.nvim', tag = 'legacy'},
   },
   config = function()
     -- import mason plugin safely
@@ -14,9 +12,6 @@ return {
     -- import mason-lspconfig plugin safely
     local mason_lspconfig = require("mason-lspconfig")
 
-    -- import mason-null-ls plugin safely
-    -- local mason_null_ls = require("mason-null-ls")
-
     -- enable mason
     mason.setup()
 
@@ -24,13 +19,9 @@ return {
       -- list of servers for mason to install
       ensure_installed = {
         "ts_ls",
-        -- "typescript-language-server",
-        -- "angular-language-server",
-        -- "angularls",
         "html",
-        -- "jdtls",
+        "jdtls",
         "cssls",
-        -- "tailwindcss",
         "svelte",
         "lua_ls",
         "graphql",
@@ -43,17 +34,5 @@ return {
       automatic_installation = true, -- not the same as ensure_installed
     })
 
-    -- mason_null_ls.setup({
-    --   -- list of formatters & linters for mason to install
-    --   ensure_installed = {
-    --     'java-debug-adapter',
-    --     'java-test',
-    --   --   "prettier", -- ts/js formatter
-    --   --   "stylua", -- lua formatter
-    --   --   "eslint_d", -- ts/js linter
-    --   },
-    --   -- auto-install configured servers (with lspconfig)
-    --   automatic_installation = true,
-    -- })
   end,
 }
