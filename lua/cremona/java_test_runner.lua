@@ -156,10 +156,10 @@ local function build_mvn_cmd(root_dir, module_dir, test_filter, extra_args)
     )
 end
 
-local function open_tmux_split(report_cmd)
+local function open_tmux_split(report_cmd, width)
     vim.fn.jobstart(
         {
-            "tmux", "split-window", "-h", "-l", "30%", report_cmd,
+            "tmux", "split-window", "-h", "-l", width or "30%", report_cmd,
             ";", "set-window-option", "remain-on-exit", "on",
         },
         { detach = true }
@@ -474,6 +474,125 @@ exec "${SHELL:-/bin/bash}"
     open_tmux_split(report_cmd)
 end
 
+-- Mostra um resumo de cobertura (JaCoCo) do módulo atual num split tmux, por
+-- pacote, ordenado do menos coberto pro mais coberto. Lê o
+-- target/site/jacoco/jacoco.xml (o mesmo relatório usado pelo ,tv) em vez do
+-- index.html: é a mesma informação, mas em XML dá pra parsear direto com
+-- xml.etree, sem depender de w3m/lynx (não instalados) pra converter HTML
+-- pra texto.
+function M.run_coverage_summary()
+    if vim.env.TMUX == nil then
+        vim.notify("Não está dentro de uma sessão tmux", vim.log.levels.ERROR)
+        return
+    end
+
+    local module_dir = M.find_maven_dirs(vim.fn.expand("%:p:h"))
+    if not module_dir then
+        vim.notify("pom.xml não encontrado a partir do arquivo atual", vim.log.levels.ERROR)
+        return
+    end
+
+    local jacoco_xml = module_dir .. "/target/site/jacoco/jacoco.xml"
+    if vim.fn.filereadable(jacoco_xml) == 0 then
+        vim.notify(
+            "Coverage: " .. jacoco_xml .. " não existe — rode ,tc ou ,tt nesse módulo primeiro",
+            vim.log.levels.WARN
+        )
+        return
+    end
+
+    -- Nada de string.format aqui: o script Python tem vários "%" literais
+    -- (ex: f"{lp:5.1f}%") que string.format tentaria interpretar como
+    -- especificador de formato e quebraria ("invalid option '%''"). gsub com
+    -- função de substituição usa o valor de retorno ao pé da letra, sem
+    -- reinterpretar "%".
+    local report_template = [[
+clear
+python3 - __JACOCO_XML_PATH__ << 'PYEOF'
+import sys
+import os
+import xml.etree.ElementTree as ET
+
+tree = ET.parse(sys.argv[1])
+root = tree.getroot()
+
+def counters(el):
+    result = {}
+    for c in el.findall("counter"):
+        result[c.get("type")] = (int(c.get("missed")), int(c.get("covered")))
+    return result
+
+def pct(missed, covered):
+    total = missed + covered
+    return 100.0 if total == 0 else covered / total * 100
+
+def color(p):
+    if p >= 80:
+        return "\033[32m"
+    if p >= 50:
+        return "\033[33m"
+    return "\033[31m"
+
+RESET = "\033[0m"
+BOLD = "\033[1m"
+
+packages = root.findall("package")
+names = [p.get("name") for p in packages]
+prefix = os.path.commonprefix(names) if names else ""
+if "/" in prefix:
+    prefix = prefix[: prefix.rfind("/") + 1]
+
+rows = []
+for pkg in packages:
+    c = counters(pkg)
+    lm, lc = c.get("LINE", (0, 0))
+    bm, bc = c.get("BRANCH", (0, 0))
+    display_name = pkg.get("name")[len(prefix):].replace("/", ".") or "(default)"
+    rows.append((display_name, lm, lc, bm, bc))
+
+rows.sort(key=lambda r: pct(r[1], r[2]))
+
+name_w = max([len(r[0]) for r in rows] + [len("Pacote")])
+
+print(f"{BOLD}{root.get('name')}{RESET} — cobertura de testes (JaCoCo)")
+print()
+header = f"{'Pacote':<{name_w}}  {'Linhas':>13}  {'%':>6}   {'Branches':>13}  {'%':>6}"
+print(header)
+print("-" * len(header))
+for name, lm, lc, bm, bc in rows:
+    lp, bp = pct(lm, lc), pct(bm, bc)
+    line_frac, branch_frac = f"{lc}/{lm + lc}", f"{bc}/{bm + bc}"
+    print(
+        f"{name:<{name_w}}  {line_frac:>13}  {color(lp)}{lp:5.1f}%{RESET}   "
+        f"{branch_frac:>13}  {color(bp)}{bp:5.1f}%{RESET}"
+    )
+print("-" * len(header))
+
+rc = counters(root)
+lm, lc = rc.get("LINE", (0, 0))
+bm, bc = rc.get("BRANCH", (0, 0))
+lp, bp = pct(lm, lc), pct(bm, bc)
+line_frac, branch_frac = f"{lc}/{lm + lc}", f"{bc}/{bm + bc}"
+print(
+    f"{BOLD}{'TOTAL':<{name_w}}{RESET}  {line_frac:>13}  {color(lp)}{lp:5.1f}%{RESET}   "
+    f"{branch_frac:>13}  {color(bp)}{bp:5.1f}%{RESET}"
+)
+PYEOF
+echo
+exec "${SHELL:-/bin/bash}"
+]]
+
+    local report_cmd = report_template:gsub("__JACOCO_XML_PATH__", function()
+        return vim.fn.shellescape(jacoco_xml)
+    end, 1)
+
+    -- Tabela larga (nome do pacote + linhas + % + branches + %): os 30% dos
+    -- outros comandos (,tc/,tt, texto curto) quebram ela no meio. Largura
+    -- fixa em colunas (não %) garante espaço suficiente mesmo em janelas
+    -- tmux menores.
+    open_tmux_split(report_cmd, "90")
+end
+
 function M.setup()
     vim.keymap.set(
         "n",
@@ -501,6 +620,13 @@ function M.setup()
         ",tt",
         M.run_project_test,
         { buffer = true, desc = "Rodar todos os testes do projeto (por classe, ao vivo) em split tmux" }
+    )
+
+    vim.keymap.set(
+        "n",
+        ",tu",
+        M.run_coverage_summary,
+        { buffer = true, desc = "Mostrar resumo de cobertura (JaCoCo) por pacote em split tmux" }
     )
 end
 
