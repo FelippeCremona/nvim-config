@@ -506,15 +506,26 @@ function M.run_coverage_summary()
     -- especificador de formato e quebraria ("invalid option '%''"). gsub com
     -- função de substituição usa o valor de retorno ao pé da letra, sem
     -- reinterpretar "%".
+    --
+    -- Escreve o script num arquivo temporário (em vez de rodar via heredoc
+    -- direto) porque ele fica num loop interativo (resumo -> fzf pra
+    -- escolher um pacote -> detalhe por arquivo -> volta pro resumo), e isso
+    -- fica mais claro como um arquivo só do que reinvocando heredocs dentro
+    -- do loop do bash.
     local report_template = [[
 clear
-python3 - __JACOCO_XML_PATH__ << 'PYEOF'
+pyfile=$(mktemp --suffix=.py)
+trap 'rm -f "$pyfile"' EXIT
+cat > "$pyfile" << 'PYEOF'
 import sys
 import os
+import subprocess
 import xml.etree.ElementTree as ET
 
-tree = ET.parse(sys.argv[1])
-root = tree.getroot()
+XML_PATH = sys.argv[1]
+RESET = "\033[0m"
+BOLD = "\033[1m"
+
 
 def counters(el):
     result = {}
@@ -522,9 +533,11 @@ def counters(el):
         result[c.get("type")] = (int(c.get("missed")), int(c.get("covered")))
     return result
 
+
 def pct(missed, covered):
     total = missed + covered
     return 100.0 if total == 0 else covered / total * 100
+
 
 def color(p):
     if p >= 80:
@@ -533,51 +546,104 @@ def color(p):
         return "\033[33m"
     return "\033[31m"
 
-RESET = "\033[0m"
-BOLD = "\033[1m"
 
+def common_prefix(names):
+    prefix = os.path.commonprefix(names) if names else ""
+    if "/" in prefix:
+        prefix = prefix[: prefix.rfind("/") + 1]
+    return prefix
+
+
+def print_rows(rows, name_header):
+    name_w = max([len(r[0]) for r in rows] + [len(name_header)])
+    header = f"{name_header:<{name_w}}  {'Linhas':>13}  {'%':>6}   {'Branches':>13}  {'%':>6}"
+    print(header)
+    print("-" * len(header))
+    for name, lm, lc, bm, bc in rows:
+        lp, bp = pct(lm, lc), pct(bm, bc)
+        line_frac, branch_frac = f"{lc}/{lm + lc}", f"{bc}/{bm + bc}"
+        print(
+            f"{name:<{name_w}}  {line_frac:>13}  {color(lp)}{lp:5.1f}%{RESET}   "
+            f"{branch_frac:>13}  {color(bp)}{bp:5.1f}%{RESET}"
+        )
+    print("-" * len(header))
+    lm = sum(r[1] for r in rows)
+    lc = sum(r[2] for r in rows)
+    bm = sum(r[3] for r in rows)
+    bc = sum(r[4] for r in rows)
+    lp, bp = pct(lm, lc), pct(bm, bc)
+    line_frac, branch_frac = f"{lc}/{lm + lc}", f"{bc}/{bm + bc}"
+    print(
+        f"{BOLD}{'TOTAL':<{name_w}}{RESET}  {line_frac:>13}  {color(lp)}{lp:5.1f}%{RESET}   "
+        f"{branch_frac:>13}  {color(bp)}{bp:5.1f}%{RESET}"
+    )
+
+
+root = ET.parse(XML_PATH).getroot()
 packages = root.findall("package")
-names = [p.get("name") for p in packages]
-prefix = os.path.commonprefix(names) if names else ""
-if "/" in prefix:
-    prefix = prefix[: prefix.rfind("/") + 1]
+prefix = common_prefix([p.get("name") for p in packages])
 
-rows = []
+pkg_rows = []
+pkg_by_display = {}
 for pkg in packages:
     c = counters(pkg)
     lm, lc = c.get("LINE", (0, 0))
     bm, bc = c.get("BRANCH", (0, 0))
     display_name = pkg.get("name")[len(prefix):].replace("/", ".") or "(default)"
-    rows.append((display_name, lm, lc, bm, bc))
+    pkg_rows.append((display_name, lm, lc, bm, bc))
+    pkg_by_display[display_name] = pkg
+pkg_rows.sort(key=lambda r: pct(r[1], r[2]))
 
-rows.sort(key=lambda r: pct(r[1], r[2]))
 
-name_w = max([len(r[0]) for r in rows] + [len("Pacote")])
+def show_summary():
+    os.system("clear")
+    print(f"{BOLD}{root.get('name')}{RESET} — cobertura de testes (JaCoCo)")
+    print()
+    print_rows(pkg_rows, "Pacote")
 
-print(f"{BOLD}{root.get('name')}{RESET} — cobertura de testes (JaCoCo)")
-print()
-header = f"{'Pacote':<{name_w}}  {'Linhas':>13}  {'%':>6}   {'Branches':>13}  {'%':>6}"
-print(header)
-print("-" * len(header))
-for name, lm, lc, bm, bc in rows:
-    lp, bp = pct(lm, lc), pct(bm, bc)
-    line_frac, branch_frac = f"{lc}/{lm + lc}", f"{bc}/{bm + bc}"
-    print(
-        f"{name:<{name_w}}  {line_frac:>13}  {color(lp)}{lp:5.1f}%{RESET}   "
-        f"{branch_frac:>13}  {color(bp)}{bp:5.1f}%{RESET}"
-    )
-print("-" * len(header))
 
-rc = counters(root)
-lm, lc = rc.get("LINE", (0, 0))
-bm, bc = rc.get("BRANCH", (0, 0))
-lp, bp = pct(lm, lc), pct(bm, bc)
-line_frac, branch_frac = f"{lc}/{lm + lc}", f"{bc}/{bm + bc}"
-print(
-    f"{BOLD}{'TOTAL':<{name_w}}{RESET}  {line_frac:>13}  {color(lp)}{lp:5.1f}%{RESET}   "
-    f"{branch_frac:>13}  {color(bp)}{bp:5.1f}%{RESET}"
-)
+def show_package_detail(display_name):
+    pkg = pkg_by_display[display_name]
+    rows = []
+    for src in pkg.findall("sourcefile"):
+        c = counters(src)
+        lm, lc = c.get("LINE", (0, 0))
+        bm, bc = c.get("BRANCH", (0, 0))
+        rows.append((src.get("name"), lm, lc, bm, bc))
+    rows.sort(key=lambda r: pct(r[1], r[2]))
+    os.system("clear")
+    print(f"{BOLD}{display_name}{RESET} — arquivos ({root.get('name')})")
+    print()
+    print_rows(rows, "Arquivo")
+
+
+def pick_package():
+    fzf_input = "\n".join(name for name, *_ in pkg_rows)
+    try:
+        result = subprocess.run(
+            ["fzf", "--height=40%", "--reverse", "--prompt=pacote> "],
+            input=fzf_input,
+            capture_output=True,
+            text=True,
+        )
+    except FileNotFoundError:
+        print("fzf não encontrado no PATH — instale pra usar a seleção interativa.")
+        return None
+    return result.stdout.strip() or None
+
+
+while True:
+    show_summary()
+    print()
+    print("Selecione um pacote pra ver por arquivo (ESC sai do fzf, Ctrl-C sai tudo):")
+    selected = pick_package()
+    if not selected:
+        break
+    show_package_detail(selected)
+    print()
+    input("ENTER pra voltar ao resumo... ")
 PYEOF
+python3 "$pyfile" __JACOCO_XML_PATH__
 echo
 exec "${SHELL:-/bin/bash}"
 ]]
