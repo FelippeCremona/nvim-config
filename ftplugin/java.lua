@@ -110,10 +110,10 @@ local config = {
         downloadSources = true,
       },
       implementationsCodeLens = {
-        enabled = true,
+        enabled = false,
       },
       referencesCodeLens = {
-        enabled = true,
+        enabled = false,
       },
       references = {
         includeDecompiledSources = true,
@@ -256,10 +256,52 @@ end
 -- esse evento dispara a cada pausa mínima do cursor, e cada refresh de
 -- referencesCodeLens busca referências no workspace inteiro por método
 -- visível — isso sobrecarregava o jdtls e deixava até gd/gi lentos.
+--
+-- implementations/referencesCodeLens ficam desligados nas settings acima por
+-- padrão pelo mesmo motivo: mesmo só nesses 3 eventos (não CursorHold), o
+-- jdtls recalcula referência/implementação de todo método visível no buffer
+-- a cada BufEnter/InsertLeave/BufWritePost, e isso é caro no workspace real.
+-- toggle_java_codelens() liga essas duas settings via
+-- workspace/didChangeConfiguration só quando pedido, e o autocmd abaixo só
+-- dispara refresh se vim.b.java_codelens_on estiver true NESTE buffer — como
+-- cada buffer Java tem seu próprio autocmd (buffer=0 no momento da criação),
+-- outros arquivos abertos não são afetados mesmo com a setting ligada no
+-- cliente (que é compartilhado por todos os buffers do mesmo projeto).
+local function set_java_codelens_setting(client, enabled)
+  client.config.settings.java.implementationsCodeLens.enabled = enabled
+  client.config.settings.java.referencesCodeLens.enabled = enabled
+  client.notify('workspace/didChangeConfiguration', { settings = client.config.settings })
+end
+
+local function toggle_java_codelens()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local clients = vim.lsp.get_clients({ bufnr = bufnr, name = 'jdtls' })
+  if vim.tbl_isempty(clients) then
+    return
+  end
+  local client = clients[1]
+
+  if vim.b.java_codelens_on then
+    vim.b.java_codelens_on = false
+    set_java_codelens_setting(client, false)
+    vim.lsp.codelens.clear(client.id, bufnr)
+    vim.notify('Java CodeLens desativado', vim.log.levels.INFO)
+  else
+    vim.b.java_codelens_on = true
+    set_java_codelens_setting(client, true)
+    vim.lsp.codelens.refresh({ bufnr = bufnr })
+    vim.notify('Java CodeLens ativado (só nesta classe)', vim.log.levels.INFO)
+  end
+end
+
+vim.keymap.set('n', ',cl', toggle_java_codelens, { buffer = 0, silent = true, desc = 'Toggle Java CodeLens (references/implementations)' })
+
 vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "BufWritePost" }, {
   buffer = 0,
   callback = function()
-    pcall(vim.lsp.codelens.refresh, { bufnr = 0 })
+    if vim.b.java_codelens_on then
+      pcall(vim.lsp.codelens.refresh, { bufnr = 0 })
+    end
   end,
 })
 

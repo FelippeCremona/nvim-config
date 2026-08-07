@@ -148,7 +148,8 @@ keymap("n", "<C-A-N>", "<cmd>lua vim.diagnostic.goto_next({severity = vim.diagno
 -- Atalhos DAP
 keymap('n', '<space>dt', ':lua require("dap").toggle_breakpoint()<CR>')
 keymap('n', '<F1>', ':lua require("dap.ui.widgets").centered_float(require("dap.ui.widgets").frames)<CR>')
-keymap('n', '<F2>', ':lua require("dap.ui.widgets").hover()<CR>')
+keymap({'n' }, '<F2>', ':lua require("dap.ui.widgets").hover()<CR>')
+keymap('v', '<F2>', function() require("dapui").eval() end)
 keymap('n', '<F3>', ':lua require"dap".repl.toggle({height=8})<CR>')
 keymap('n', '<F4>', ':lua require"dap.ui.widgets".centered_float(require"dap.ui.widgets".scopes)<CR>')
 keymap('n', '<F8>', ':lua require"dap".continue()<CR>')
