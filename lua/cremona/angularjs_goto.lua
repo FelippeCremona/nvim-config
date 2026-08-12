@@ -363,6 +363,26 @@ local function html_cursor_context(alias)
   return nil
 end
 
+-- Acha o controller "pai" de um arquivo de controller, procurando o mesmo
+-- padrão que os scripts Python (analise-codigo) usam pra detectar herança:
+-- "angular.extend(this, $controller('Pai', {$scope: $scope}))". Um
+-- controller "abstrato" desses expõe metodos/propriedades via vm.x = ... só
+-- no PRÓPRIO arquivo -- quem estende ganha essas propriedades em runtime,
+-- mas o texto delas só existe no arquivo do pai.
+local function find_parent_controller_name(filepath)
+  local ok, lines = pcall(vim.fn.readfile, filepath)
+  if not ok then
+    return nil
+  end
+  for _, line in ipairs(lines) do
+    local name = line:match("%$controller%(%s*['\"]([%w_]+)['\"]")
+    if name then
+      return name
+    end
+  end
+  return nil
+end
+
 function M.goto_html_controller_member()
   local controller, alias = find_controller_for_current_html()
   if not controller then
@@ -385,26 +405,54 @@ function M.goto_html_controller_member()
     return
   end
 
-  local candidates = find_method_candidates(filepath, member_name)
+  -- Procura o membro no controller da view; se não achar, sobe a cadeia de
+  -- herança (angular.extend + $controller('Pai', ...)) até achar ou até a
+  -- cadeia acabar -- cobre o caso de vm.algo vir de um controller abstrato.
+  local search_path = filepath
+  local search_name = controller
+  local visited = {}
   local target
-  if #candidates > 0 then
-    for _, c in ipairs(candidates) do
-      if arg_count ~= nil and c.params == arg_count then
-        target = c
+
+  while search_path do
+    visited[search_name] = true
+
+    local candidates = find_method_candidates(search_path, member_name)
+    if #candidates > 0 then
+      for _, c in ipairs(candidates) do
+        if arg_count ~= nil and c.params == arg_count then
+          target = c
+          break
+        end
+      end
+      target = target or candidates[1]
+      filepath = search_path
+      break
+    end
+
+    if arg_count == nil then
+      local prop_candidates = find_property_candidates(search_path, alias, member_name)
+      if prop_candidates[1] then
+        target = prop_candidates[1]
+        filepath = search_path
         break
       end
     end
-    target = target or candidates[1]
-  end
 
-  if not target and arg_count == nil then
-    local prop_candidates = find_property_candidates(filepath, alias, member_name)
-    target = prop_candidates[1]
+    local parent_name = find_parent_controller_name(search_path)
+    if not parent_name or visited[parent_name] then
+      break
+    end
+    local parent_file = find_file_by_name(parent_name .. ".js") or find_file_registering_service(parent_name)
+    if not parent_file then
+      break
+    end
+    search_path = parent_file
+    search_name = parent_name
   end
 
   if not target then
     vim.notify(
-      '"' .. member_name .. '" não encontrado em ' .. filename .. " — abrindo o controller (" .. controller .. ")",
+      '"' .. member_name .. '" não encontrado em ' .. filename .. " nem na cadeia de herança (angular.extend) — abrindo o controller (" .. controller .. ")",
       vim.log.levels.WARN
     )
     vim.cmd("edit " .. vim.fn.fnameescape(filepath))
