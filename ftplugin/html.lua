@@ -1,6 +1,6 @@
 vim.keymap.set(
   "n",
-  ",gc",
+  ",c",
   function()
     require("cremona.angularjs_goto").goto_html_controller_member()
   end,

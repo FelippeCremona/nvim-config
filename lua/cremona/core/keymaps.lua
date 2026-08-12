@@ -68,8 +68,8 @@ keymap('n','gD','<cmd>lua vim.lsp.buf.declaration()<CR>')
 -- que só decide depois que TODOS os clientes responderem — a versão anterior
 -- usava buf_request simples, que reagia ao primeiro cliente a responder e
 -- quebrava a navegação normal quando havia mais de um cliente no buffer).
--- Se nada for encontrado: em .js cai pro ,gd (goto_service_method), em .html
--- cai pro ,gc (goto_html_controller_member).
+-- Se nada for encontrado: em .js cai pro goto_service_method, em .html
+-- cai pro ,c (goto_html_controller_member).
 local function smart_goto_definition_fallback()
   local ft = vim.bo.filetype
   if ft == "javascript" or ft == "javascriptreact" then

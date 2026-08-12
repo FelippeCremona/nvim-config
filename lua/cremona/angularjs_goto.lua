@@ -3,17 +3,18 @@
 -- Simula "go to definition" pra código AngularJS 1.x, já que a injeção de
 -- dependência por string desse projeto não deixa o ts_ls/html resolver isso.
 --
--- ,gd (arquivo .js): chamadas de serviço tipo processoService.recupera(id).
+-- goto_service_method (arquivo .js, fallback do gd sem vírgula): chamadas de
+-- serviço tipo processoService.recupera(id).
 -- Convenção: variável "processoService" (camelCase) -> arquivo
 -- "ProcessoService.js" (PascalCase), método exposto como
 -- "function nome(params) { ... }" dentro dele.
 --
--- ,gc (arquivo .html): acha o controller associado à view atual procurando
+-- ,c (arquivo .html): acha o controller associado à view atual procurando
 -- a definição de rota do ui-router (templateUrl + controller), e se o
 -- cursor estiver em cima de "vm.algumaCoisa"/"vm.metodo(...)" pula direto
 -- pra definição dentro do controller.
 --
--- ,gr (arquivo .js, dentro de um método que chama $http): acha o endpoint
+-- ,a (arquivo .js, dentro de um método que chama $http): acha o endpoint
 -- Java correspondente. Convenção: o trecho de URL em "url: url + 'segmento'"
 -- aparece literalmente dentro de "@Path("/segmento")" no lado Java.
 
