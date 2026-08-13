@@ -125,6 +125,16 @@ local config = {
           profile = "GoogleStyle",
         },
       },
+      -- Diferente de implementations/referencesCodeLens, calcular esses hints
+      -- é barato (só olha os argumentos literais da chamada visível, sem
+      -- busca no workspace), então deixamos a setting do servidor sempre
+      -- ligada; quem controla se aparece na tela é o toggle client-side
+      -- (,cl, mais abaixo) via vim.lsp.inlay_hint.enable().
+      inlayHints = {
+        parameterNames = {
+          enabled = "literals",
+        },
+      },
 
     },
     signatureHelp = { enabled = true },
@@ -285,16 +295,18 @@ local function toggle_java_codelens()
     vim.b.java_codelens_on = false
     set_java_codelens_setting(client, false)
     vim.lsp.codelens.clear(client.id, bufnr)
-    vim.notify('Java CodeLens desativado', vim.log.levels.INFO)
+    vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
+    vim.notify('Java CodeLens + inlay hints desativados', vim.log.levels.INFO)
   else
     vim.b.java_codelens_on = true
     set_java_codelens_setting(client, true)
     vim.lsp.codelens.refresh({ bufnr = bufnr })
-    vim.notify('Java CodeLens ativado (só nesta classe)', vim.log.levels.INFO)
+    vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+    vim.notify('Java CodeLens + inlay hints ativados (só nesta classe)', vim.log.levels.INFO)
   end
 end
 
-vim.keymap.set('n', ',cl', toggle_java_codelens, { buffer = 0, silent = true, desc = 'Toggle Java CodeLens (references/implementations)' })
+vim.keymap.set('n', ',cl', toggle_java_codelens, { buffer = 0, silent = true, desc = 'Toggle Java CodeLens (references/implementations) + inlay hints (nomes de parâmetro)' })
 
 vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "BufWritePost" }, {
   buffer = 0,
