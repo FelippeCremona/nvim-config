@@ -132,7 +132,7 @@ local config = {
       -- (,cl, mais abaixo) via vim.lsp.inlay_hint.enable().
       inlayHints = {
         parameterNames = {
-          enabled = "literals",
+          enabled = "all",
         },
       },
 
